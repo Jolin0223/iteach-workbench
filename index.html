@@ -1,0 +1,1053 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iTeach 小学工作台 2.0 Demo</title>
+  <script src="lucide.min.js"></script>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #fff;
+      --ink: #15243b;
+      --muted: #718097;
+      --line: #e3eaf3;
+      --line-strong: #d4deeb;
+      --blue: #246bfe;
+      --blue-2: #0e58e8;
+      --blue-soft: #edf4ff;
+      --teal: #19a986;
+      --teal-soft: #eaf9f4;
+      --orange: #f28a39;
+      --orange-soft: #fff3e7;
+      --purple: #7766e6;
+      --purple-soft: #f0eeff;
+      --shadow: 0 12px 30px rgba(30, 58, 102, .06);
+      --shadow-small: 0 4px 14px rgba(30, 58, 102, .05);
+      --radius: 10px;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 1180px; background: var(--bg); }
+    button, input { font: inherit; }
+    button { border: 0; cursor: pointer; }
+    [hidden] { display: none !important; }
+
+    .app { min-height: 100vh; display: grid; grid-template-columns: 228px minmax(0, 1fr); }
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      padding: 19px 14px 16px;
+      background: rgba(255,255,255,.92);
+      border-right: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; padding: 0 8px 24px; }
+    .brand-logo { display: block; width: 194px; height: auto; max-width: 100%; }
+    .nav { display: grid; gap: 18px; }
+    .nav-group { display: grid; gap: 4px; }
+    .nav-label { padding: 0 10px 4px; color: #8491a6; font-size: 12px; font-weight: 700; }
+    .nav-item {
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 11px;
+      color: #344156;
+      background: transparent;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 14px;
+      transition: .18s ease;
+    }
+    .nav-item:hover { color: var(--blue); background: #f3f7fd; }
+    .nav-item.active { color: var(--blue); background: var(--blue-soft); font-weight: 800; }
+    .nav-item svg { width: 18px; height: 18px; flex: 0 0 auto; stroke-width: 1.9; }
+    .nav-item.active svg { stroke-width: 2.4; }
+
+    .main { min-width: 0; padding: 18px 24px 36px; }
+    .main.resource-page { position: relative; padding-top: 12px; }
+    .main.resource-page .topbar { position: absolute; top: 12px; right: 24px; z-index: 4; height: 38px; margin: 0; }
+    .main.resource-page .resource-title-row { padding-top: 12px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; height: 50px; margin-bottom: 16px; }
+    .page-heading { display: flex; align-items: center; gap: 12px; }
+    .page-heading h1 { margin: 0; font-size: 22px; letter-spacing: 0; }
+    .top-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+    .preview-switcher { display: flex; align-items: center; gap: 5px; padding: 4px; background: #edf2f8; border: 1px solid var(--line); border-radius: 8px; user-select: none; }
+    .preview-switcher.is-hidden { opacity: 0; pointer-events: auto; }
+    .preview-switcher span { padding: 0 7px; color: #8996a8; font-size: 11px; font-weight: 700; }
+    .preview-switcher button { height: 27px; padding: 0 9px; border-radius: 6px; color: #68758a; background: transparent; font-size: 12px; }
+    .preview-switcher button.active { color: var(--blue); background: #fff; box-shadow: var(--shadow-small); font-weight: 800; }
+    .ai-top { height: 38px; display: inline-flex; align-items: center; gap: 7px; padding: 0 13px; color: #225bd4; background: #fff; border: 1px solid #cfe0ff; border-radius: 8px; font-weight: 800; }
+    .ai-top svg { width: 17px; height: 17px; }
+    .icon-button { width: 38px; height: 38px; display: grid; place-items: center; color: #475770; background: transparent; border-radius: 8px; position: relative; }
+    .icon-button:hover { background: #edf3fb; color: var(--blue); }
+    .icon-button svg { width: 20px; height: 20px; }
+    .badge { position: absolute; top: -1px; right: -1px; min-width: 17px; height: 17px; padding: 0 4px; display: grid; place-items: center; color: white; background: #f35b48; border-radius: 20px; font-size: 10px; font-weight: 800; }
+    .user { display: flex; align-items: center; gap: 8px; padding-left: 2px; color: #314159; font-size: 14px; font-weight: 700; }
+    .avatar { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: linear-gradient(145deg, #f3bb9d, #9d6b71 48%, #394a68); font-size: 12px; }
+    .user svg { width: 15px; height: 15px; }
+
+    .view { display: none; }
+    .view.active { display: grid; gap: 16px; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .panel-head { min-height: 28px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .panel-title { margin: 0; display: flex; align-items: center; gap: 9px; color: #182942; font-size: 18px; font-weight: 800; }
+    .panel-title::before { content: ""; width: 4px; height: 18px; border-radius: 4px; background: var(--blue); }
+    .panel-link { display: inline-flex; align-items: center; gap: 4px; padding: 0; color: var(--blue); background: transparent; font-size: 13px; font-weight: 700; }
+    .panel-link svg { width: 15px; height: 15px; }
+    .muted { color: var(--muted); }
+
+    .hero { min-height: 148px; display: grid; grid-template-columns: 33% 67%; overflow: hidden; background: linear-gradient(110deg, #eff7ff, #fff 58%); }
+    .hero-welcome { position: relative; overflow: hidden; padding: 25px 30px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid #e1ebfa; }
+    .hero-welcome::after { content: ""; position: absolute; width: 210px; height: 110px; right: -48px; bottom: -63px; border: 1px solid rgba(71,142,245,.2); border-radius: 50%; transform: rotate(-18deg); }
+    .hero-kicker { color: #6b83a4; font-size: 12px; font-weight: 700; }
+    .hero-welcome h2 { position: relative; z-index: 1; margin: 5px 0 6px; color: #155ae3; font-size: 29px; letter-spacing: 0; }
+    .hero-welcome p { position: relative; z-index: 1; margin: 0; color: #536984; font-size: 13px; }
+    .hero-visual { position: absolute; right: 16px; bottom: 12px; width: 104px; height: 70px; opacity: .88; }
+    .hero-visual .screen { position: absolute; right: 4px; top: 5px; width: 64px; height: 43px; border: 3px solid #6b9ff8; border-radius: 8px; transform: rotate(-5deg); background: linear-gradient(140deg, #fff, #dcebff); box-shadow: 7px 7px 0 #c7dcff; }
+    .hero-visual .screen::before { content: ""; position: absolute; left: 10px; top: 10px; width: 33px; height: 4px; background: #73a1f4; box-shadow: 0 10px 0 #b9d3fc, 0 20px 0 #b9d3fc; }
+    .hero-visual .book { position: absolute; left: 5px; bottom: 4px; width: 45px; height: 14px; border-radius: 4px; background: #7da8ff; transform: rotate(5deg); box-shadow: 6px 7px 0 #a8c8ff; }
+    .hero-visual .plant { position: absolute; left: 0; bottom: 14px; width: 18px; height: 23px; border-radius: 5px 5px 8px 8px; background: #ffe0a3; box-shadow: inset 0 -9px 0 #f2b55a; }
+    .hero-visual .plant::before { content: ""; position: absolute; left: -4px; top: -10px; width: 22px; height: 18px; border-radius: 50%; background: #46c99a; transform: rotate(-18deg); }
+    .resource-summary { position: relative; padding: 19px 25px 17px; background: #fff; }
+    .resource-summary::before { content: ""; position: absolute; left: 0; top: 24px; bottom: 24px; width: 1px; background: #e5edf8; }
+    .resource-summary .panel-head { min-height: 24px; margin-bottom: 9px; }
+    .resource-summary .panel-title { font-size: 15px; }
+    .resource-summary .panel-title::before { width: 3px; height: 15px; background: #36b98d; }
+    .resource-items { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; }
+    .resource-item { min-width: 0; min-height: 70px; display: grid; grid-template-columns: 34px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 10px; align-content: center; padding: 6px 14px; background: transparent; border-right: 1px solid #edf1f6; border-radius: 7px; transition: .18s ease; text-align: left; }
+    .resource-item:first-child { padding-left: 5px; }
+    .resource-item:last-child { border-right: 0; padding-right: 5px; }
+    .resource-item:hover { background: #f8fbff; }
+    .resource-top { display: contents; color: #617087; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .resource-top > span:last-child { align-self: end; }
+    .resource-icon { grid-row: 1 / 3; width: 34px; height: 34px; display: grid; place-items: center; align-self: center; border-radius: 10px; }
+    .resource-icon svg { width: 17px; height: 17px; }
+    .resource-icon.orange { color: #e47725; background: #fff1e5; }
+    .resource-icon.green { color: #159c72; background: #e9f8f2; }
+    .resource-icon.purple { color: #725bd2; background: #f0edff; }
+    .resource-icon.blue { color: #2c70dd; background: #ebf3ff; }
+    .resource-count { grid-column: 2; display: block; margin-top: 4px; color: #1d2d49; font-size: 20px; font-weight: 850; line-height: 1; }
+    .resource-count small { margin-left: 2px; color: #738096; font-size: 11px; font-weight: 700; }
+
+    .shortcuts, .ai-courseware-recommendations { min-width: 0; padding: 16px 20px 18px; }
+    .ai-courseware-recommendations { overflow: hidden; }
+    .shortcuts .panel-head, .ai-courseware-recommendations .panel-head { margin-bottom: 13px; }
+    .shortcut-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(178px, 1fr)); gap: 10px; }
+    .shortcut { min-height: 82px; display: flex; align-items: center; justify-content: flex-start; gap: 12px; min-width: 0; padding: 13px 14px; color: #25334a; background: linear-gradient(145deg, #fff, #f8fbff); border: 1px solid #e7edf5; border-radius: 8px; transition: .18s ease; text-align: left; }
+    .shortcut:hover { transform: translateY(-2px); border-color: #b8d2ff; box-shadow: 0 7px 17px rgba(36,107,254,.11); }
+    .shortcut-icon { width: 36px; height: 36px; display: grid; place-items: center; flex: 0 0 auto; color: var(--blue); background: var(--blue-soft); border-radius: 10px; }
+    .shortcut-icon svg { width: 19px; height: 19px; }
+    .shortcut:nth-child(2n) .shortcut-icon { color: var(--teal); background: var(--teal-soft); }
+    .shortcut:nth-child(3n) .shortcut-icon { color: var(--orange); background: var(--orange-soft); }
+    .shortcut-label { display: -webkit-box; overflow: hidden; color: #24344e; font-size: 13px; font-weight: 800; line-height: 1.3; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .shortcut-meta { overflow: hidden; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+    .shortcut-copy { display: grid; min-width: 0; gap: 0; }
+    .shortcut-empty { grid-column: 1 / -1; min-height: 82px; display: grid; place-items: center; color: var(--muted); background: #fbfcfe; border: 1px dashed var(--line-strong); border-radius: 8px; font-size: 13px; }
+
+    .recommendation-title-wrap { display: flex; align-items: center; gap: 9px; }
+    .recommendation-count { padding: 3px 7px; color: #2770e7; background: #edf4ff; border-radius: 5px; font-size: 11px; font-weight: 800; }
+    .recommendation-controls { display: flex; align-items: center; gap: 6px; }
+    .carousel-control { width: 28px; height: 28px; display: grid; place-items: center; color: #52657d; background: #f4f7fb; border: 1px solid #dfe7f1; border-radius: 6px; }
+    .carousel-control:hover:not(:disabled) { color: var(--blue); background: var(--blue-soft); border-color: #c6d9fc; }
+    .carousel-control:disabled { color: #b4bfcd; cursor: not-allowed; opacity: .65; }
+    .carousel-control svg { width: 16px; height: 16px; }
+    .recommendation-track { width: 100%; min-width: 0; display: flex; gap: 10px; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-inline: contain; }
+    .recommendation-track::-webkit-scrollbar { display: none; }
+    .recommendation-card { position: relative; height: 82px; aspect-ratio: 16 / 9; flex: 0 0 auto; overflow: hidden; background: #edf3fb; border: 1px solid #dce5f0; border-radius: 8px; scroll-snap-align: start; transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+    .recommendation-card:hover, .recommendation-card:focus-within { transform: translateY(-2px); border-color: #9fc1f7; box-shadow: 0 8px 18px rgba(35,91,181,.16); }
+    .recommendation-cover { position: absolute; inset: 0; overflow: hidden; background: #edf3fb; }
+    .recommendation-cover::before { content: ""; position: absolute; inset: 0; z-index: 1; background: rgba(17,38,70,.34); opacity: 0; transition: opacity .2s ease; }
+    .recommendation-cover::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 38px; background: linear-gradient(180deg, transparent, rgba(12,31,58,.78)); }
+    .recommendation-cover img { width: 100%; height: 100%; display: block; object-fit: contain; }
+    .recommendation-card h3 { position: absolute; z-index: 2; left: 9px; right: 9px; bottom: 6px; overflow: hidden; margin: 0; color: #fff; font-size: 11px; font-weight: 800; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1px 4px rgba(0,0,0,.28); }
+    .recommendation-preview { position: absolute; z-index: 3; left: 50%; top: 46%; height: 27px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 0 9px; color: #1f63d8; background: rgba(255,255,255,.96); border: 1px solid rgba(255,255,255,.9); border-radius: 6px; box-shadow: 0 5px 14px rgba(8,29,63,.2); font-size: 10px; font-weight: 800; white-space: nowrap; opacity: 0; pointer-events: none; transform: translate(-50%, -42%) scale(.96); transition: opacity .18s ease, transform .18s ease; }
+    .recommendation-preview svg { width: 12px; height: 12px; }
+    .recommendation-card:hover .recommendation-cover::before, .recommendation-card:focus-within .recommendation-cover::before { opacity: 1; }
+    .recommendation-card:hover .recommendation-preview, .recommendation-card:focus-within .recommendation-preview { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+
+    .class-schedule { padding: 18px 20px 20px; }
+    .schedule-title-wrap { display: flex; align-items: center; gap: 11px; }
+    .schedule-summary { display: inline-flex; align-items: center; gap: 7px; color: #718097; font-size: 12px; }
+    .schedule-summary strong { padding: 4px 8px; color: #1766df; background: #edf5ff; border-radius: 5px; font-size: 12px; }
+    .schedule-toolbar { display: flex; align-items: center; gap: 7px; }
+    .toolbar-button { height: 30px; padding: 0 9px; display: inline-flex; align-items: center; gap: 5px; color: #56667c; background: #f4f7fb; border: 1px solid #e1e8f1; border-radius: 6px; font-size: 12px; font-weight: 700; }
+    .toolbar-button.active, .toolbar-button:hover { color: var(--blue); background: var(--blue-soft); border-color: #c9dcff; }
+    .schedule-layout { display: grid; grid-template-columns: 338px minmax(0, 1fr); gap: 18px; align-items: stretch; }
+    .calendar-box { padding: 13px 15px; background: #f7faff; border: 1px solid #e4edfb; border-radius: 9px; }
+    .calendar-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .calendar-head strong { color: #2c3e59; font-size: 14px; }
+    .calendar-head button { width: 25px; height: 25px; display: grid; place-items: center; color: #617189; background: #fff; border: 1px solid #e0e8f3; border-radius: 6px; }
+    .calendar-head svg { width: 14px; height: 14px; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .calendar-grid span { height: 27px; display: grid; place-items: center; color: #8795aa; font-size: 11px; }
+    .calendar-grid button { height: 29px; display: grid; place-items: center; color: #34455f; background: transparent; border-radius: 50%; font-size: 12px; position: relative; }
+    .calendar-grid button.has-course::after { content: ""; position: absolute; bottom: 2px; width: 3px; height: 3px; border-radius: 50%; background: var(--orange); }
+    .calendar-grid button.selected { color: #fff; background: var(--blue); box-shadow: 0 4px 10px rgba(36,107,254,.25); }
+    .calendar-grid button.selected::after { background: #fff; }
+    .lesson-table { min-width: 0; border: 1px solid #e7edf5; border-radius: 9px; overflow: hidden; }
+    .lesson-head, .lesson-row { display: grid; grid-template-columns: 58px 130px 68px 78px 70px minmax(326px, 1fr); gap: 8px; align-items: center; }
+    .lesson-head { min-height: 38px; padding: 0 14px; color: #8190a4; background: #f8fafc; font-size: 11px; font-weight: 700; }
+    .lesson-row { min-height: 78px; padding: 10px 14px; color: #34445c; border-top: 1px solid #edf1f6; font-size: 12px; }
+    .lesson-time { color: #1d3151; font-weight: 800; font-size: 14px; }
+    .lesson-main strong { display: block; margin-bottom: 4px; color: #1f304b; font-size: 14px; }
+    .lesson-main em { display: block; color: #7b899d; font-size: 10px; font-style: normal; font-weight: 600; line-height: 1.2; white-space: nowrap; }
+    .progress-wrap { display: grid; gap: 6px; }
+    .progress-text { color: #526984; font-size: 11px; }
+    .progress-bar { width: 70px; height: 5px; overflow: hidden; background: #e5ecf5; border-radius: 5px; }
+    .progress-bar i { display: block; height: 100%; background: var(--blue); border-radius: 5px; }
+    .status { width: max-content; padding: 5px 8px; border-radius: 20px; font-size: 11px; font-weight: 800; }
+    .status.in { color: #15966d; background: var(--teal-soft); }
+    .status.wait { color: #d57924; background: var(--orange-soft); }
+    .action-row { display: flex; flex-wrap: nowrap; gap: 5px; }
+    .lesson-action { height: 27px; display: inline-flex; align-items: center; gap: 4px; padding: 0 7px; color: #2e6de7; background: #f5f8ff; border: 1px solid #dce8ff; border-radius: 5px; font-size: 11px; white-space: nowrap; }
+    .lesson-action:hover { color: #fff; background: var(--blue); border-color: var(--blue); }
+    .lesson-action svg { width: 13px; height: 13px; }
+    .lesson-empty { min-height: 194px; display: grid; place-items: center; padding: 24px; border-top: 1px solid #edf1f6; text-align: center; }
+    .lesson-empty-icon { width: 50px; height: 50px; display: grid; place-items: center; margin: 0 auto 10px; color: #78a5ef; background: #edf5ff; border-radius: 50%; }
+    .lesson-empty-icon svg { width: 23px; height: 23px; }
+    .lesson-empty strong { display: block; margin-bottom: 5px; color: #34455f; font-size: 14px; }
+    .lesson-empty span { color: #8795aa; font-size: 12px; }
+
+    .recent { padding: 18px 20px 16px; }
+    .resource-tabs { display: flex; gap: 7px; flex-wrap: wrap; }
+    .resource-tab { height: 32px; padding: 0 13px; color: #607087; background: #f3f6fa; border-radius: 7px; font-size: 12px; font-weight: 700; }
+    .resource-tab.active, .resource-tab:hover { color: var(--blue); background: var(--blue-soft); }
+    .recent-table { border: 1px solid #e7edf5; border-radius: 8px; overflow: hidden; }
+    .recent-head, .recent-row { display: grid; grid-template-columns: minmax(0, 1fr) 108px 150px 190px; gap: 12px; align-items: center; }
+    .recent-head { min-height: 34px; padding: 0 14px; color: #8290a4; background: #f8fafc; font-size: 11px; font-weight: 700; }
+    .recent-row { min-height: 55px; padding: 0 14px; border-top: 1px solid #edf1f6; font-size: 13px; }
+    .recent-name { display: flex; align-items: center; gap: 10px; min-width: 0; color: #26364e; font-weight: 800; }
+    .file-icon { width: 26px; height: 30px; display: grid; place-items: center; flex: 0 0 auto; color: #fff; border-radius: 6px; font-size: 10px; font-weight: 900; }
+    .file-icon.course { background: linear-gradient(145deg, #ffb75b, #f38330); }
+    .file-icon.practice { background: linear-gradient(145deg, #74d9b0, #29a876); }
+    .file-icon.paper { background: linear-gradient(145deg, #bba1ff, #755cdf); }
+    .file-icon.test { background: linear-gradient(145deg, #73adff, #3779ea); }
+    .ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .type-chip { width: max-content; padding: 5px 8px; color: #617188; background: #f2f5f9; border-radius: 6px; font-size: 11px; font-weight: 700; }
+    .recent-actions { display: flex; align-items: center; gap: 10px; }
+    .recent-action { color: var(--blue); background: transparent; font-size: 12px; font-weight: 700; text-align: left; }
+    .recent-action:hover { text-decoration: underline; }
+    .recent-action:disabled { color: #aab5c4; cursor: not-allowed; text-decoration: none; }
+
+    .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .info-card { min-height: 146px; height: 146px; display: flex; flex-direction: column; align-items: flex-start; position: relative; overflow: hidden; padding: 20px 24px; }
+    .info-card.blue { background: linear-gradient(110deg, #f1f7ff, #fff); }
+    .info-card.orange { background: linear-gradient(110deg, #fff8f0, #fff); }
+    .info-card h3 { margin: 0 0 8px; font-size: 18px; }
+    .info-card.blue h3 { color: var(--blue); }
+    .info-card.orange h3 { color: #ec7b23; }
+    .info-card p { margin: 0 0 14px; color: #6b7d93; font-size: 13px; }
+    .info-card .info-cta { height: 31px; display: inline-flex; align-items: center; gap: 4px; margin-top: auto; padding: 0 12px; color: #fff; border-radius: 7px; font-size: 12px; font-weight: 800; }
+    .info-card.blue .info-cta { background: var(--blue); }
+    .info-card.orange .info-cta { background: #f48b36; }
+    .info-art { position: absolute; right: 28px; bottom: 10px; width: 112px; height: 76px; opacity: .87; }
+    .clipboard { position: absolute; right: 25px; bottom: 10px; width: 45px; height: 60px; border: 3px solid #8ab3ff; border-radius: 7px; background: #fff; transform: rotate(8deg); box-shadow: 7px 7px 0 #d9e8ff; }
+    .clipboard::before { content: ""; position: absolute; left: 10px; top: 15px; width: 24px; height: 4px; background: #8ab3ff; box-shadow: 0 11px 0 #c5d9ff, 0 22px 0 #c5d9ff; }
+    .megaphone { position: absolute; right: 18px; bottom: 24px; width: 52px; height: 29px; border-radius: 8px 18px 18px 8px; background: #ff9a42; transform: rotate(-12deg); box-shadow: 10px 4px 0 #ffd8b0; }
+    .megaphone::before { content: ""; position: absolute; left: -16px; top: 5px; width: 20px; height: 19px; border-radius: 5px 0 0 5px; background: #ef7823; }
+
+    .resource-view { gap: 14px; }
+    .resource-page-head { padding: 2px 8px 0; background: transparent; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 13px; color: #8491a6; font-size: 12px; }
+    .resource-title-row { display: flex; align-items: center; gap: 16px; }
+    .resource-title-row h2 { margin: 0; color: #172840; font-size: 25px; }
+    .resource-create { height: 36px; display: inline-flex; align-items: center; gap: 7px; margin-left: auto; padding: 0 14px; color: #fff; background: var(--blue); border-radius: 7px; font-size: 13px; font-weight: 800; box-shadow: 0 6px 14px rgba(36,107,254,.2); }
+    .resource-create svg { width: 16px; height: 16px; }
+    .scope-tabs { display: flex; align-items: center; gap: 38px; margin-top: 18px; border-bottom: 1px solid #dfe7f1; }
+    .scope-tab { height: 42px; position: relative; padding: 0 8px; color: #3f4f67; background: transparent; font-size: 14px; font-weight: 700; }
+    .scope-tab.active { color: var(--blue); }
+    .scope-tab.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--blue); border-radius: 3px 3px 0 0; }
+    .resource-workspace { padding: 18px 20px 20px; background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow-small); }
+    .resource-workspace-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 15px; }
+    .resource-mode-tabs { display: flex; align-items: center; gap: 28px; }
+    .resource-mode-tab { height: 35px; position: relative; color: #2e3c52; background: transparent; font-size: 16px; font-weight: 800; }
+    .resource-mode-tab.active { color: var(--blue); }
+    .resource-mode-tab.active::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 3px; background: var(--blue); border-radius: 3px; }
+    .resource-search { width: 245px; height: 36px; display: flex; align-items: center; gap: 7px; padding: 0 11px; border: 1px solid var(--line-strong); border-radius: 7px; background: #fff; }
+    .resource-search:focus-within { border-color: #8cb5ff; box-shadow: 0 0 0 3px rgba(36,107,254,.08); }
+    .resource-search svg { width: 16px; height: 16px; color: #8190a4; }
+    .resource-search input { width: 100%; border: 0; outline: 0; color: var(--ink); font-size: 12px; }
+    .resource-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 16px; min-height: 570px; }
+    .knowledge-panel { display: flex; flex-direction: column; padding: 18px; border: 1px solid #e2e8f1; border-radius: 7px; }
+    .knowledge-search { width: 100%; height: 36px; display: flex; align-items: center; gap: 7px; padding: 0 10px; border: 1px solid var(--line-strong); border-radius: 6px; }
+    .knowledge-search svg { width: 16px; height: 16px; color: #8996a8; }
+    .knowledge-search input { width: 100%; min-width: 0; border: 0; outline: 0; font-size: 12px; }
+    .knowledge-empty { flex: 1; display: grid; place-items: center; color: #929fb1; text-align: center; }
+    .knowledge-empty-icon { width: 60px; height: 60px; display: grid; place-items: center; margin: 0 auto 13px; color: #7da8ee; background: #edf5ff; border-radius: 14px; box-shadow: 10px 9px 0 #dceaff; }
+    .knowledge-empty-icon svg { width: 27px; height: 27px; }
+    .knowledge-empty span { font-size: 12px; }
+    .resource-main { min-width: 0; }
+    .filter-panel { padding: 13px 16px; border: 1px solid #e2e8f1; border-radius: 7px; }
+    .filter-row { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 8px; align-items: start; min-height: 34px; }
+    .filter-label { padding-top: 6px; color: #7d8999; font-size: 12px; }
+    .filter-options { display: flex; flex-wrap: wrap; gap: 4px 8px; }
+    .filter-option { min-height: 28px; padding: 0 9px; color: #2f3c50; background: transparent; border-radius: 5px; font-size: 12px; }
+    .filter-option.active, .filter-option:hover { color: var(--blue); background: var(--blue-soft); }
+    .resource-sort { display: flex; justify-content: flex-end; margin: 10px 0 12px; }
+    .sort-button { height: 32px; display: inline-flex; align-items: center; gap: 6px; padding: 0 11px; color: #35445b; background: #fff; border: 1px solid var(--line-strong); border-radius: 6px; font-size: 12px; font-weight: 700; }
+    .sort-button svg { width: 14px; height: 14px; }
+    .resource-grid-page { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 18px; }
+    .resource-tile { min-width: 0; background: #fff; }
+    .resource-cover { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #eef3f8; border-radius: 7px; border: 1px solid #e6ebf2; }
+    .resource-cover img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .2s ease; }
+    .resource-tile:hover .resource-cover img { transform: scale(1.025); }
+    .resource-tile-body { padding: 9px 1px 0; }
+    .resource-title-line { display: flex; align-items: center; gap: 6px; min-width: 0; margin-bottom: 7px; }
+    .resource-id { padding: 2px 4px; flex: 0 0 auto; color: #2670e8; background: #eaf3ff; border-radius: 4px; font-size: 10px; }
+    .resource-tile h3 { overflow: hidden; margin: 0; color: #29364a; font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+    .resource-tile-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #8995a7; font-size: 10px; }
+    .resource-stats { display: flex; align-items: center; gap: 10px; }
+    .resource-stats span { display: inline-flex; align-items: center; gap: 3px; }
+    .resource-stats svg { width: 12px; height: 12px; }
+    .scope { color: #3975dd; background: var(--blue-soft); border-radius: 4px; padding: 3px 5px; }
+    .resource-tile-actions { display: flex; gap: 10px; margin-top: 7px; opacity: 0; transition: .18s ease; }
+    .resource-tile:hover .resource-tile-actions { opacity: 1; }
+    .resource-tile-actions button { padding: 0; color: var(--blue); background: transparent; font-size: 11px; font-weight: 700; }
+    .resource-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 22px; color: #65748a; font-size: 12px; }
+    .page-button { width: 30px; height: 30px; color: #526178; background: #fff; border: 1px solid var(--line); border-radius: 5px; }
+    .page-button svg { width: 14px; height: 14px; vertical-align: middle; }
+    .page-button.active { color: #fff; background: var(--blue); border-color: var(--blue); }
+
+    .resource-empty { grid-column: 1 / -1; min-height: 260px; display: grid; place-items: center; color: #8795a8; background: #fbfdff; border: 1px dashed #dbe4ef; border-radius: 7px; text-align: center; }
+    .resource-empty svg { width: 30px; height: 30px; margin-bottom: 9px; color: #75a4ef; }
+
+    .ai-drawer-backdrop { position: fixed; inset: 0; z-index: 40; display: flex; justify-content: flex-end; background: rgba(20, 37, 62, .28); }
+    .ai-drawer { width: min(740px, 92vw); height: 100%; overflow: auto; background: #f4f7fb; box-shadow: -20px 0 60px rgba(25, 47, 82, .2); }
+    .ai-drawer-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 17px 24px; color: #172943; background: rgba(255,255,255,.97); border-top: 3px solid #246bfe; border-bottom: 1px solid #dfe8f4; box-shadow: 0 5px 18px rgba(31,65,113,.06); backdrop-filter: blur(12px); }
+    .ai-agent-title { display: flex; align-items: center; gap: 11px; }
+    .ai-agent-mark { width: 40px; height: 40px; display: grid; place-items: center; flex: 0 0 auto; color: #fff; background: #246bfe; border-radius: 9px; box-shadow: 0 7px 16px rgba(36,107,254,.2); }
+    .ai-agent-mark svg { width: 20px; height: 20px; }
+    .ai-drawer-head h2 { margin: 0 0 3px; color: #172943; font-size: 18px; }
+    .ai-drawer-head p { margin: 0; color: #718198; font-size: 12px; }
+    .ai-close { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 auto; color: #64748a; background: #f1f5fa; border-radius: 7px; }
+    .ai-close:hover { color: #245fcd; background: #eaf2ff; }
+    .ai-close svg { width: 18px; height: 18px; }
+    .ai-drawer-body { display: grid; gap: 14px; padding: 18px 24px 28px; }
+    .ai-prompt-box { position: relative; overflow: hidden; padding: 18px; background: #fff; border: 1px solid #d8e4f3; border-radius: 8px; box-shadow: 0 7px 20px rgba(36,73,123,.05); }
+    .ai-prompt-box::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #246bfe; }
+    .ai-prompt-box label { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; color: #20334e; font-size: 14px; font-weight: 800; }
+    .ai-prompt-box label svg { width: 16px; height: 16px; color: #246bfe; }
+    .ai-prompt-row { display: grid; gap: 10px; }
+    .ai-prompt-row textarea { width: 100%; min-height: 94px; resize: vertical; padding: 12px 13px; color: #26374e; background: #f8fafd; border: 1px solid #dce5f1; border-radius: 7px; outline: 0; font: inherit; font-size: 13px; line-height: 1.6; }
+    .ai-prompt-row textarea:focus { border-color: #7ba8f5; box-shadow: 0 0 0 3px rgba(36,107,254,.08); }
+    .ai-prompt-footer { display: grid; gap: 10px; }
+    .ai-send { height: 38px; min-width: 108px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; justify-self: end; padding: 0 14px; color: #fff; background: var(--blue); border-radius: 7px; font-size: 12px; font-weight: 800; box-shadow: 0 5px 12px rgba(36,107,254,.18); }
+    .ai-send:disabled { cursor: wait; opacity: .72; }
+    .ai-send svg { width: 15px; height: 15px; }
+    .ai-suggestions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+    .ai-suggestion { min-width: 0; min-height: 39px; display: flex; align-items: center; gap: 7px; padding: 8px 10px; overflow: hidden; color: #426184; background: #f6f9fd; border: 1px solid #e0e8f3; border-radius: 6px; font-size: 11px; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+    .ai-suggestion svg { width: 14px; height: 14px; flex: 0 0 auto; color: #5b8de7; }
+    .ai-suggestion:hover { color: var(--blue); border-color: #b8d2ff; background: var(--blue-soft); }
+    .ai-prompt-box.courseware-mode .ai-suggestions { display: none; }
+    .ai-result { padding: 17px; background: #fff; border: 1px solid #dfe8f4; border-radius: 8px; }
+    .ai-result-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+    .ai-result-head h3 { margin: 0 0 5px; color: #20334f; font-size: 15px; }
+    .ai-result-head p { margin: 0; color: #74849a; font-size: 11px; line-height: 1.5; }
+    .ai-result-status { display: inline-flex; align-items: center; gap: 5px; flex: 0 0 auto; color: #168764; font-size: 11px; font-weight: 800; }
+    .ai-result-status svg { width: 14px; height: 14px; }
+    .ai-package { display: grid; gap: 8px; }
+    .ai-package-item { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px; background: #f8fafd; border: 1px solid #edf1f6; border-radius: 7px; }
+    .ai-package-icon { width: 34px; height: 34px; display: grid; place-items: center; color: #3472df; background: #eaf2ff; border-radius: 7px; }
+    .ai-package-icon svg { width: 17px; height: 17px; }
+    .ai-package-copy strong { display: block; margin-bottom: 3px; color: #2a3a51; font-size: 12px; }
+    .ai-package-copy span { color: #8390a3; font-size: 10px; }
+    .ai-package-action { color: var(--blue); background: transparent; font-size: 11px; font-weight: 800; }
+    .ai-result-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+    .ai-result-actions button { height: 34px; padding: 0 12px; border-radius: 6px; font-size: 12px; font-weight: 800; }
+    .ai-secondary { color: #3566b9; background: #edf4ff; }
+    .ai-primary { color: #fff; background: var(--blue); }
+    .ai-guardrail { display: flex; align-items: flex-start; gap: 8px; color: #728199; font-size: 11px; line-height: 1.55; }
+    .ai-guardrail svg { width: 15px; height: 15px; flex: 0 0 auto; margin-top: 1px; color: #4d83df; }
+
+    .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(25, 43, 70, .34); }
+    .modal { width: min(860px, 100%); max-height: 88vh; overflow: auto; padding: 24px; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 24px 80px rgba(26,47,84,.22); }
+    .modal-head { position: sticky; top: -24px; z-index: 2; display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; margin: -24px -24px 20px; padding: 20px 24px 14px; background: rgba(255,255,255,.97); border-bottom: 1px solid #edf1f6; backdrop-filter: blur(10px); }
+    .modal-head h2 { margin: 0 0 6px; font-size: 20px; }
+    .modal-head p { margin: 0; color: var(--muted); font-size: 13px; }
+    .modal-close { width: 32px; height: 32px; display: grid; place-items: center; color: #607087; background: #f3f6fa; border-radius: 7px; }
+    .modal-close svg { width: 17px; height: 17px; }
+    .role-block { margin-bottom: 18px; }
+    .selection-head, .available-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .selection-head { margin-bottom: 9px; }
+    .selection-head h3, .available-head h3 { margin: 0; color: #22344e; font-size: 14px; }
+    .selection-head span, .available-head span { color: var(--muted); font-size: 11px; }
+    .selected-list { display: grid; gap: 6px; margin-bottom: 18px; padding: 10px; background: #f6f9fd; border: 1px solid #e0e8f2; border-radius: 8px; }
+    .selected-row { min-height: 44px; display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; align-items: center; gap: 9px; padding: 5px 7px; background: #fff; border: 1px solid #e4ebf4; border-radius: 6px; }
+    .selected-index { color: #246bfe; font-size: 12px; font-weight: 850; text-align: center; }
+    .selected-copy { min-width: 0; }
+    .selected-copy strong { display: block; margin-bottom: 2px; color: #2b3e58; font-size: 12px; }
+    .selected-copy small { display: block; overflow: hidden; color: #8190a4; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .sort-actions { display: flex; gap: 4px; }
+    .sort-button-icon { width: 28px; height: 28px; display: grid; place-items: center; color: #5f7188; background: #f1f5fa; border-radius: 5px; }
+    .sort-button-icon:hover:not(:disabled) { color: #246bfe; background: #eaf2ff; }
+    .sort-button-icon:disabled { color: #bdc6d2; cursor: not-allowed; }
+    .sort-button-icon svg { width: 14px; height: 14px; }
+    .selected-empty { padding: 12px; color: #8593a6; text-align: center; font-size: 12px; }
+    .available-head { margin-bottom: 9px; }
+    .menu-groups { display: grid; gap: 12px; }
+    .menu-group { padding: 11px; background: #fbfcfe; border: 1px solid #e5ebf3; border-radius: 8px; }
+    .menu-group h4 { margin: 0 0 9px; color: #506077; font-size: 12px; }
+    .option-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .option { min-height: 45px; display: flex; align-items: center; gap: 8px; padding: 5px 9px; color: #46566c; background: #fff; border: 1px solid var(--line); border-radius: 7px; font-size: 12px; }
+    .option > span { display: grid; min-width: 0; gap: 3px; }
+    .option strong { overflow: hidden; font-size: 12px; line-height: 1.3; }
+    .option small { overflow: hidden; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .option input { accent-color: var(--blue); }
+    .option:has(input:checked) { color: #1f5fd5; background: var(--blue-soft); border-color: #bcd4ff; }
+    .info-card[data-external-url] { cursor: pointer; }
+    .courseware-preview-backdrop { position: fixed; inset: 0; z-index: 55; display: grid; place-items: center; padding: 16px; background: rgba(18,34,58,.55); }
+    .courseware-preview-modal { width: min(980px, calc(100vw - 32px)); height: min(720px, calc(100vh - 32px)); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; background: #fff; border: 1px solid #dce5f1; border-radius: 10px; box-shadow: 0 28px 90px rgba(12,31,61,.3); }
+    .courseware-preview-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; border-bottom: 1px solid #e5ebf3; }
+    .courseware-preview-head span { display: block; margin-bottom: 3px; color: #246bfe; font-size: 10px; font-weight: 850; }
+    .courseware-preview-head h2 { margin: 0; color: #1c2d47; font-size: 17px; }
+    .courseware-preview-close { width: 32px; height: 32px; display: grid; place-items: center; flex: 0 0 auto; color: #617188; background: #f1f5fa; border-radius: 6px; }
+    .courseware-preview-close svg { width: 17px; height: 17px; }
+    .courseware-preview-stage { position: relative; min-height: 0; overflow: hidden; background: #eef3f8; }
+    .courseware-preview-stage iframe { position: relative; z-index: 1; width: 100%; height: 100%; display: block; border: 0; background: #fff; }
+    .courseware-preview-loading { position: absolute; inset: 0; display: grid; place-items: center; color: #718198; font-size: 12px; }
+    .courseware-preview-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; border-top: 1px solid #e5ebf3; background: #fff; }
+    .courseware-preview-footer p { margin: 0; color: #7a899d; font-size: 11px; }
+    .courseware-preview-footer-actions { display: flex; gap: 8px; }
+    .courseware-preview-footer button { height: 34px; padding: 0 13px; border-radius: 6px; font-size: 12px; font-weight: 800; }
+    .courseware-preview-cancel { color: #586980; background: #f1f5f9; }
+    .courseware-preview-same { display: inline-flex; align-items: center; gap: 5px; color: #fff; background: #f58b2c; }
+    .courseware-preview-same svg { width: 14px; height: 14px; }
+    .modal-footer { position: sticky; bottom: -24px; z-index: 2; display: flex; align-items: center; justify-content: flex-end; gap: 9px; margin: 18px -24px -24px; padding: 14px 24px; background: rgba(255,255,255,.97); border-top: 1px solid #edf1f6; backdrop-filter: blur(10px); }
+    .modal-footer button { height: 36px; padding: 0 15px; border-radius: 7px; font-size: 13px; font-weight: 800; }
+    .modal-footer .cancel { color: #5c6b80; background: #f2f5f9; }
+    .modal-footer .save { color: #fff; background: var(--blue); }
+    .toast { position: fixed; left: 50%; bottom: 24px; z-index: 30; transform: translate(-50%, 20px); padding: 11px 16px; color: #fff; background: #1b2c46; border-radius: 8px; box-shadow: 0 10px 30px rgba(26,43,70,.2); opacity: 0; pointer-events: none; transition: .2s ease; font-size: 13px; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 1500px) {
+      .main { padding-left: 18px; padding-right: 18px; }
+      .lesson-head, .lesson-row { grid-template-columns: 40px 88px 40px 52px 48px minmax(204px, 1fr); gap: 4px; padding-left: 8px; padding-right: 8px; }
+      .lesson-head { line-height: 1.35; }
+      .lesson-main strong { font-size: 12px; white-space: nowrap; }
+      .lesson-main em { font-size: 9px; }
+      .lesson-action { padding: 0 4px; font-size: 10px; }
+      .lesson-action svg { display: none; }
+      .shortcut-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <img class="brand-logo" src="iteach-logo.png" alt="iTeach小学工作台" />
+      </div>
+      <nav class="nav" aria-label="主导航">
+        <div class="nav-group">
+          <div class="nav-label">工作台</div>
+          <button class="nav-item active" data-view="home"><i data-lucide="home"></i><span>首页</span></button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">教学内容</div>
+          <button class="nav-item" data-toast="将进入备课中心"><i data-lucide="file-pen-line"></i><span>备课中心</span></button>
+          <button class="nav-item" data-toast="将进入练习中心"><i data-lucide="list-checks"></i><span>练习中心</span></button>
+          <button class="nav-item" data-toast="将进入试卷中心"><i data-lucide="file-text"></i><span>试卷中心</span></button>
+          <button class="nav-item" data-toast="将进入测评中心"><i data-lucide="clipboard-check"></i><span>测评中心</span></button>
+          <button class="nav-item" data-view="resources"><i data-lucide="library-big"></i><span>资源中心</span></button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">教学服务</div>
+          <button class="nav-item" data-toast="将进入我的课表"><i data-lucide="calendar-days"></i><span>我的课表</span></button>
+          <button class="nav-item" data-toast="将进入我的班级"><i data-lucide="users-round"></i><span>我的班级</span></button>
+          <button class="nav-item" data-toast="将进入我的学员"><i data-lucide="user-round"></i><span>我的学员</span></button>
+          <button class="nav-item" data-toast="将进入作业管理"><i data-lucide="clipboard-list"></i><span>作业管理</span></button>
+          <button class="nav-item" data-toast="将进入学情服务"><i data-lucide="chart-no-axes-column"></i><span>学情服务</span></button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">师训专区</div>
+          <button class="nav-item" data-toast="将进入功底考"><i data-lucide="graduation-cap"></i><span>功底考</span></button>
+          <button class="nav-item" data-toast="将进入教师学堂"><i data-lucide="book-open-check"></i><span>教师学堂</span></button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">运营专区</div>
+          <button class="nav-item" data-toast="将进入活动管理"><i data-lucide="sparkles"></i><span>活动管理</span></button>
+          <button class="nav-item" data-toast="将进入测评应用"><i data-lucide="grid-2x2"></i><span>测评应用</span></button>
+          <button class="nav-item" data-toast="将进入试卷分析"><i data-lucide="file-chart-column"></i><span>试卷分析</span></button>
+          <button class="nav-item" data-toast="将进入考情分析"><i data-lucide="chart-spline"></i><span>考情分析</span></button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">应用管理</div>
+          <button class="nav-item" data-toast="将进入数据中心"><i data-lucide="database"></i><span>数据中心</span></button>
+          <button class="nav-item" data-toast="将进入权限管理"><i data-lucide="user-cog"></i><span>权限管理</span></button>
+          <button class="nav-item" data-toast="将进入应用中心"><i data-lucide="blocks"></i><span>应用中心</span></button>
+          <button class="nav-item" data-toast="将进入回收站"><i data-lucide="trash-2"></i><span>回收站</span></button>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main" id="mainContent">
+      <header class="topbar">
+        <div class="page-heading" id="pageHeading">
+          <h1 id="pageTitle">首页</h1>
+        </div>
+        <div class="top-actions">
+          <div class="preview-switcher is-hidden" id="rolePreview" aria-label="原型预览角色，连续点击三次显示">
+            <span>原型预览</span>
+            <button class="active" data-role="teacher">授课老师</button>
+            <button data-role="branch">分校教研</button>
+            <button data-role="group">集团教研</button>
+            <button data-role="multi">多角色</button>
+          </div>
+          <button class="ai-top" id="aiAssistant"><i data-lucide="sparkles"></i>AI助手</button>
+          <div class="user"><span class="avatar">张</span><span>张老师</span><i data-lucide="chevron-down"></i></div>
+        </div>
+      </header>
+
+      <section class="view active" id="homeView">
+        <section class="panel hero">
+          <div class="hero-welcome">
+            <span class="hero-kicker">2026年8月24日 · 星期一</span>
+            <h2>上午好，张老师！</h2>
+            <p>从课表、班级和最近内容继续今天的工作</p>
+            <div class="hero-visual" aria-hidden="true"><span class="screen"></span><span class="book"></span><span class="plant"></span></div>
+          </div>
+          <div class="resource-summary">
+            <div class="panel-head"><h2 class="panel-title">本周上新</h2><button class="panel-link" data-view="resources">进入资源中心<i data-lucide="arrow-up-right"></i></button></div>
+            <div class="resource-items">
+              <button class="resource-item" data-toast="将进入课件筛选结果"><span class="resource-top"><span class="resource-icon orange"><i data-lucide="presentation"></i></span><span class="resource-label">课件</span></span><strong class="resource-count">21<small>个</small></strong></button>
+              <button class="resource-item" data-toast="将进入练习筛选结果"><span class="resource-top"><span class="resource-icon green"><i data-lucide="list-checks"></i></span><span class="resource-label">练习</span></span><strong class="resource-count">18<small>个</small></strong></button>
+              <button class="resource-item" data-toast="将进入试卷筛选结果"><span class="resource-top"><span class="resource-icon purple"><i data-lucide="file-text"></i></span><span class="resource-label">试卷</span></span><strong class="resource-count">15<small>份</small></strong></button>
+              <button class="resource-item" data-toast="将进入测评筛选结果"><span class="resource-top"><span class="resource-icon blue"><i data-lucide="clipboard-check"></i></span><span class="resource-label">测评</span></span><strong class="resource-count">9<small>个</small></strong></button>
+              <button class="resource-item" data-toast="将进入AI素材筛选结果"><span class="resource-top"><span class="resource-icon blue"><i data-lucide="blocks"></i></span><span class="resource-label">AI素材</span></span><strong class="resource-count">12<small>个</small></strong></button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel ai-courseware-recommendations" aria-labelledby="recommendationTitle">
+          <div class="panel-head">
+            <div class="recommendation-title-wrap"><h2 class="panel-title" id="recommendationTitle">AI课件精选推荐</h2><span class="recommendation-count">10个</span></div>
+            <div class="recommendation-controls"><button class="carousel-control" id="recommendationPrev" aria-label="查看上一组AI课件"><i data-lucide="chevron-left"></i></button><button class="carousel-control" id="recommendationNext" aria-label="查看下一组AI课件"><i data-lucide="chevron-right"></i></button></div>
+          </div>
+          <div class="recommendation-track" id="recommendationTrack" aria-label="AI课件推荐列表"></div>
+        </section>
+
+        <section class="panel shortcuts">
+          <div class="panel-head"><h2 class="panel-title">功能快捷入口</h2><button class="panel-link" id="editShortcuts"><i data-lucide="settings-2"></i>编辑常用</button></div>
+          <div class="shortcut-grid" id="shortcutGrid"></div>
+        </section>
+
+        <section class="panel class-schedule" id="classSchedule" data-role-dependent="teacher">
+          <div class="panel-head">
+            <div class="schedule-title-wrap"><h2 class="panel-title">班级课表</h2><span class="schedule-summary" id="scheduleSummary"></span></div>
+            <div class="schedule-toolbar"><button class="toolbar-button" data-calendar-shift="-1" aria-label="上一个月"><i data-lucide="chevron-left"></i></button><button class="toolbar-button" id="todayButton">今天</button><button class="toolbar-button" data-calendar-shift="1" aria-label="下一个月"><i data-lucide="chevron-right"></i></button></div>
+          </div>
+          <div class="schedule-layout">
+            <div class="calendar-box">
+              <div class="calendar-head"><button data-calendar-shift="-1" aria-label="上一个月"><i data-lucide="chevron-left"></i></button><strong id="calendarTitle">2026年8月</strong><button data-calendar-shift="1" aria-label="下一个月"><i data-lucide="chevron-right"></i></button></div>
+              <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+            <div class="lesson-table">
+              <div class="lesson-head"><span>上课时间</span><span>班级名称与班级编码</span><span>班级人数</span><span>授课进度</span><span>课次状态</span><span>课次操作</span></div>
+              <div id="lessonTableBody"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel recent">
+          <div class="panel-head"><h2 class="panel-title">最近使用</h2><div style="display:flex;align-items:center;gap:12px"><div class="resource-tabs"><button class="resource-tab active" data-toast="显示全部内容">全部</button><button class="resource-tab" data-toast="筛选课件">课件</button><button class="resource-tab" data-toast="筛选练习">练习</button><button class="resource-tab" data-toast="筛选试卷">试卷</button><button class="resource-tab" data-toast="筛选测评">测评</button></div><button class="panel-link" data-toast="打开全部最近记录">全部记录<i data-lucide="arrow-up-right"></i></button></div></div>
+          <div class="recent-table"><div class="recent-head"><span>内容名称</span><span>类型</span><span>最近打开时间</span><span>操作</span></div><div class="recent-row"><div class="recent-name"><span class="file-icon course">P</span><span class="ellipsis">《秋天的雨》教学课件</span></div><span class="type-chip">课件</span><span class="muted">今天 09:32</span><div class="recent-actions"><button class="recent-action" data-toast="查看《秋天的雨》教学课件">查看</button><button class="recent-action" data-toast="继续编辑《秋天的雨》教学课件">继续编辑</button></div></div><div class="recent-row"><div class="recent-name"><span class="file-icon practice">✓</span><span class="ellipsis">《秋天的雨》课堂练习</span></div><span class="type-chip">练习</span><span class="muted">昨天 16:15</span><div class="recent-actions"><button class="recent-action" data-toast="查看《秋天的雨》课堂练习">查看</button><button class="recent-action" data-toast="继续编辑《秋天的雨》课堂练习">继续编辑</button></div></div><div class="recent-row"><div class="recent-name"><span class="file-icon paper">卷</span><span class="ellipsis">《单元综合测试卷》</span></div><span class="type-chip">试卷</span><span class="muted">昨天 10:20</span><div class="recent-actions"><button class="recent-action" data-toast="查看《单元综合测试卷》">查看</button><button class="recent-action" disabled title="暂无编辑权限">继续编辑</button></div></div><div class="recent-row"><div class="recent-name"><span class="file-icon test">测</span><span class="ellipsis">三年级语文课文阶段测评</span></div><span class="type-chip">测评</span><span class="muted">5-19 20:45</span><div class="recent-actions"><button class="recent-action" data-toast="查看三年级语文课文阶段测评">查看</button><button class="recent-action" disabled title="暂无编辑权限">继续编辑</button></div></div></div>
+        </section>
+
+        <section class="bottom-grid"><div class="panel info-card blue" role="link" tabindex="0" data-external-url="https://me.xdf.cn/ntp/course/courseIndexAll?category=19f3b5f7f3c86e0aa1554b54372bf261"><h3>新手指南</h3><p>快速上手工作台</p><span class="info-cta">查看详情 <i data-lucide="arrow-right"></i></span><span class="info-art clipboard"></span></div><div class="panel info-card orange" role="link" tabindex="0" data-external-url="https://alidocs.dingtalk.com/i/nodes/MNDoBb60VLrO1jjNTaoXMnyk8lemrZQ3?iframeQuery=utm_source%3Dportal%26utm_medium%3Dportal_main_colum_create"><h3>功能上新通知</h3><p>新功能上线 3 项</p><span class="info-cta">查看详情 <i data-lucide="arrow-right"></i></span><span class="info-art megaphone"></span></div></section>
+      </section>
+
+      <section class="view resource-view" id="resourceView">
+        <section class="resource-page-head">
+          <div class="breadcrumb"><span>教学内容</span><i data-lucide="chevron-right"></i><span>资源中心</span></div>
+          <div class="resource-title-row"><h2>资源中心</h2></div>
+          <div class="scope-tabs"><button class="scope-tab active" data-resource-scope="group">集团资源</button><button class="scope-tab" data-resource-scope="school">校本资源</button><button class="scope-tab" data-resource-scope="personal">个人资源</button><button class="resource-create" data-toast="打开AI互动课件创建页"><i data-lucide="plus"></i>添加AI互动课件</button></div>
+        </section>
+        <section class="resource-workspace">
+          <div class="resource-workspace-head">
+            <div class="resource-mode-tabs"><button class="resource-mode-tab" data-resource-mode="knowledge">知识点资源</button><button class="resource-mode-tab active" data-resource-mode="ai">AI素材工坊</button></div>
+            <label class="resource-search"><i data-lucide="search"></i><input id="resourceSearch" placeholder="搜索资源标题、ID" /></label>
+          </div>
+          <div class="resource-layout">
+            <aside class="knowledge-panel">
+              <label class="knowledge-search"><i data-lucide="search"></i><input id="knowledgeSearch" placeholder="请输入知识点关键字" /></label>
+              <div class="knowledge-empty"><div><span class="knowledge-empty-icon"><i data-lucide="network"></i></span><span>暂无知识点数据</span></div></div>
+            </aside>
+            <div class="resource-main">
+              <div class="filter-panel">
+                <div class="filter-row"><span class="filter-label">资源类型</span><div class="filter-options"><button class="filter-option active" data-resource-type="all">全部</button><button class="filter-option" data-resource-type="interactive">互动课件</button><button class="filter-option" data-resource-type="video">视频</button><button class="filter-option" data-resource-type="image">图片</button><button class="filter-option" data-resource-type="audio">音频</button></div></div>
+                <div class="filter-row"><span class="filter-label">学科</span><div class="filter-options"><button class="filter-option active" data-resource-subject="all">全部</button><button class="filter-option" data-resource-subject="语文">语文</button><button class="filter-option" data-resource-subject="创客">创客</button><button class="filter-option" data-resource-subject="美术">美术</button><button class="filter-option" data-resource-subject="思辨与口才">思辨与口才</button><button class="filter-option" data-resource-subject="脑力与思维">脑力与思维</button><button class="filter-option" data-resource-subject="双语故事表演">双语故事表演</button><button class="filter-option" data-resource-subject="机器人">机器人</button><button class="filter-option" data-resource-subject="编程">编程</button><button class="filter-option" data-resource-subject="数学">数学</button><button class="filter-option" data-resource-subject="英语">英语</button></div></div>
+                <div class="filter-row"><span class="filter-label">资源来源</span><div class="filter-options"><button class="filter-option active" data-resource-origin="all">全部</button><button class="filter-option" data-resource-origin="集团生产">集团生产</button><button class="filter-option" data-resource-origin="集团收录">集团收录</button><button class="filter-option" data-resource-origin="我生产的">我生产的</button></div></div>
+              </div>
+              <div class="resource-sort"><button class="sort-button" data-toast="已按最新发布时间排序"><i data-lucide="arrow-down-up"></i>最新发布</button></div>
+              <section class="resource-grid-page" id="resourceGridPage"></section>
+              <div class="resource-pagination"><span id="resourceTotal">共 0 条</span><button class="page-button"><i data-lucide="chevron-left"></i></button><button class="page-button active">1</button><button class="page-button">2</button><button class="page-button">3</button><button class="page-button">4</button><button class="page-button">5</button><span>…</span><button class="page-button">42</button><button class="page-button"><i data-lucide="chevron-right"></i></button></div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="shortcutModal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><div><h2 id="modalTitle">编辑常用菜单</h2><p id="modalDesc">选择要显示在首页的二级菜单，并调整展示顺序。</p></div><button class="modal-close" id="closeModal" aria-label="关闭"><i data-lucide="x"></i></button></div><div id="shortcutOptions"></div><div class="modal-footer"><button class="cancel" id="cancelModal">取消</button><button class="save" id="saveModal">保存设置</button></div></div></div>
+  <div class="courseware-preview-backdrop" id="coursewarePreview" hidden>
+    <section class="courseware-preview-modal" role="dialog" aria-modal="true" aria-labelledby="coursewarePreviewTitle">
+      <header class="courseware-preview-head"><div><span>AI互动课件试玩</span><h2 id="coursewarePreviewTitle">课件标题</h2></div><button class="courseware-preview-close" id="closeCoursewarePreview" aria-label="关闭课件试玩"><i data-lucide="x"></i></button></header>
+      <div class="courseware-preview-stage"><div class="courseware-preview-loading" id="coursewarePreviewLoading">正在加载互动课件...</div><iframe id="coursewarePreviewFrame" title="AI互动课件试玩" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock" allow="fullscreen" loading="eager"></iframe></div>
+      <footer class="courseware-preview-footer"><p>试玩不会修改原课件；生成同款前仍可调整教学内容。</p><div class="courseware-preview-footer-actions"><button class="courseware-preview-cancel" id="cancelCoursewarePreview">关闭</button><button class="courseware-preview-same" id="previewSameStyle"><i data-lucide="wand-sparkles"></i>一键同款</button></div></footer>
+    </section>
+  </div>
+  <div class="ai-drawer-backdrop" id="aiDrawer" hidden>
+    <aside class="ai-drawer" role="dialog" aria-modal="true" aria-labelledby="aiDrawerTitle">
+      <div class="ai-drawer-head"><div class="ai-agent-title"><span class="ai-agent-mark"><i data-lucide="sparkles"></i></span><div><h2 id="aiDrawerTitle">iTeach AI教学Agent</h2><p id="aiDrawerSubtitle">理解教学目标，调用你有权限的内容与业务能力</p></div></div><button class="ai-close" id="closeAiDrawer" aria-label="关闭AI助手"><i data-lucide="x"></i></button></div>
+      <div class="ai-drawer-body">
+        <section class="ai-prompt-box"><label for="aiPrompt"><i data-lucide="message-square-text"></i>告诉AI你要完成什么教学工作</label><div class="ai-prompt-row"><textarea id="aiPrompt">帮我为下一节《秋天的雨》配齐一份可直接上课的课件和10分钟课后练习，优先使用集团优质内容。</textarea><div class="ai-prompt-footer"><div class="ai-suggestions"><button class="ai-suggestion"><i data-lucide="package-check"></i>为下一节课配齐课件和练习</button><button class="ai-suggestion"><i data-lucide="copy-plus"></i>找集团内容并生成校本草稿</button><button class="ai-suggestion"><i data-lucide="scan-search"></i>检查课程产品内容缺口</button><button class="ai-suggestion"><i data-lucide="link-2"></i>推荐练习并准备班级绑定</button></div><button class="ai-send" id="runAiAgent"><i data-lucide="send"></i>开始执行</button></div></div></section>
+        <section class="ai-result" id="aiResult" hidden><div class="ai-result-head"><div><h3>已生成教学内容方案</h3><p>检索了权限内36项内容，匹配课程标准、课次目标和班级进度后完成组合</p></div><span class="ai-result-status"><i data-lucide="circle-check"></i>方案已就绪</span></div><div class="ai-package"><div class="ai-package-item"><span class="ai-package-icon"><i data-lucide="presentation"></i></span><div class="ai-package-copy"><strong>《秋天的雨》第2课时互动课件</strong><span>集团资源 · 匹配度96% · 可复制编辑</span></div><button class="ai-package-action" data-toast="预览互动课件">预览</button></div><div class="ai-package-item"><span class="ai-package-icon"><i data-lucide="list-checks"></i></span><div class="ai-package-copy"><strong>课后巩固练习 · 10分钟</strong><span>8道题 · 已按本班授课进度调整难度</span></div><button class="ai-package-action" data-toast="预览课后练习">预览</button></div><div class="ai-package-item"><span class="ai-package-icon"><i data-lucide="image"></i></span><div class="ai-package-copy"><strong>秋景描写互动素材</strong><span>集团收录 · 可插入课件 · 无需单独下载</span></div><button class="ai-package-action" data-toast="预览互动素材">预览</button></div></div><div class="ai-result-actions"><button class="ai-secondary" data-toast="打开完整方案预览">查看完整方案</button><button class="ai-primary" data-toast="已创建个人草稿，绑定前仍需你确认">复制为个人草稿</button></div></section>
+        <div class="ai-guardrail"><i data-lucide="shield-check"></i><span>AI只能读取当前账号有权查看的内容。发布、覆盖、批量绑定等操作必须先预览并由你确认；AI不会执行删除或修改权限。</span></div>
+      </div>
+    </aside>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const aiCoursewareRecommendations = [
+      { title: "堵车华容道-车辆逃脱", image: "assets/ai-courseware-recommendations/recommendation-01.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/f57d9d4ceeae49c785b2f4ba8797f8ca/index.html" },
+      { title: "四宫格数独-数字填格闯关", image: "assets/ai-courseware-recommendations/recommendation-02.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/72dd870d6072461581081877c26ab014/index.html" },
+      { title: "颜色序列推理", image: "assets/ai-courseware-recommendations/recommendation-03.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/ff2095eb1dc04b7fa71bc624d6bfceef/index.html" },
+      { title: "分数披萨店-分数配餐", image: "assets/ai-courseware-recommendations/recommendation-04.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/fraction-pizza.html" },
+      { title: "六宫珍珠连线-黑白珍珠回路", image: "assets/ai-courseware-recommendations/recommendation-05.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/12fa58e91e3b45618e49d0636e04d717/index.html" },
+      { title: "星际解码-数织谜题", image: "assets/ai-courseware-recommendations/recommendation-06.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/eda9d71fa91b4174b5574e9a2979baa2/index.html" },
+      { title: "战舰逻辑挑战-行列推理", image: "assets/ai-courseware-recommendations/recommendation-07.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/battleship-logic/index.html" },
+      { title: "Make-a-Word果冻拼词-单词拼写", image: "assets/ai-courseware-recommendations/recommendation-08.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/make-a-word-jelly/index.html" },
+      { title: "磁力片正方体-立体拼搭", image: "assets/ai-courseware-recommendations/recommendation-09.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/33f1f1f658da4c519a19c4299eb3fade/index.html" },
+      { title: "转一转找答案-时钟认读", image: "assets/ai-courseware-recommendations/recommendation-10.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/clock-reading.html" }
+    ];
+
+    const shortcutCatalog = {
+      "集团云盘": { path: "备课中心 > 集团云盘", group: "教学内容", icon: "folder-open" },
+      "校本云盘": { path: "备课中心 > 校本云盘", group: "教学内容", icon: "folder-open" },
+      "个人云盘": { path: "备课中心 > 个人云盘", group: "教学内容", icon: "folder-plus" },
+      "集团练习": { path: "练习中心 > 集团练习", group: "教学内容", icon: "list-checks" },
+      "校本练习": { path: "练习中心 > 校本练习", group: "教学内容", icon: "list-checks" },
+      "个人练习": { path: "练习中心 > 个人练习", group: "教学内容", icon: "list-plus" },
+      "练习绑定": { path: "练习中心 > 练习绑定", group: "教学内容", icon: "link-2" },
+      "集团试卷": { path: "试卷中心 > 集团试卷", group: "教学内容", icon: "file-text" },
+      "校本试卷": { path: "试卷中心 > 校本试卷", group: "教学内容", icon: "file-text" },
+      "个人试卷": { path: "试卷中心 > 个人试卷", group: "教学内容", icon: "file-text" },
+      "能力测评": { path: "测评中心 > 能力测评", group: "教学内容", icon: "clipboard-check" },
+      "阶段测试": { path: "测评中心 > 阶段测试", group: "教学内容", icon: "timer-reset" },
+      "成绩管理": { path: "测评中心 > 成绩管理", group: "教学内容", icon: "chart-column" },
+      "集团资源": { path: "资源中心 > 集团资源", group: "教学内容", icon: "library-big" },
+      "校本资源": { path: "资源中心 > 校本资源", group: "教学内容", icon: "library-big" },
+      "个人资源": { path: "资源中心 > 个人资源", group: "教学内容", icon: "library-big" },
+      "课表": { path: "我的课表 > 课表", group: "教学服务", icon: "calendar-days" },
+      "班级列表": { path: "我的班级 > 班级列表", group: "教学服务", icon: "users-round" },
+      "学员列表": { path: "我的学员 > 学员列表", group: "教学服务", icon: "user-round" },
+      "开课中班级": { path: "作业管理 > 开课中班级", group: "教学服务", icon: "clipboard-list" },
+      "未开课班级": { path: "作业管理 > 未开课班级", group: "教学服务", icon: "calendar-clock" },
+      "已结课班级": { path: "作业管理 > 已结课班级", group: "教学服务", icon: "calendar-check-2" },
+      "学情列表": { path: "学情服务 > 学情列表", group: "教学服务", icon: "chart-no-axes-column" },
+      "功底考练习": { path: "功底考 > 功底考练习", group: "师训专区", icon: "graduation-cap" },
+      "功底考配置": { path: "功底考 > 功底考配置", group: "师训专区", icon: "settings-2" },
+      "考试配置": { path: "功底考 > 考试配置", group: "师训专区", icon: "file-cog" },
+      "课程学习": { path: "教师学堂 > 课程学习", group: "师训专区", icon: "book-open-check" },
+      "活动列表": { path: "活动管理 > 活动列表", group: "运营专区", icon: "sparkles" },
+      "授课使用明细": { path: "数据中心 > 授课使用明细", group: "应用管理", icon: "chart-no-axes-combined" },
+      "应用入口与授权应用": { path: "应用中心 > 应用入口与授权应用", group: "应用管理", icon: "blocks" },
+      "已删除内容管理": { path: "回收站 > 已删除内容管理", group: "应用管理", icon: "archive-restore" }
+    };
+    const teacherMenus = ["集团云盘", "校本云盘", "个人云盘", "集团练习", "校本练习", "个人练习", "练习绑定", "集团试卷", "校本试卷", "个人试卷", "能力测评", "阶段测试", "成绩管理", "集团资源", "校本资源", "个人资源", "课表", "班级列表", "学员列表", "开课中班级", "未开课班级", "已结课班级", "学情列表", "功底考练习", "课程学习", "活动列表", "应用入口与授权应用", "已删除内容管理"];
+    const branchMenus = ["集团云盘", "校本云盘", "个人云盘", "集团练习", "校本练习", "个人练习", "练习绑定", "集团试卷", "校本试卷", "个人试卷", "能力测评", "成绩管理", "集团资源", "校本资源", "个人资源", "功底考练习", "课程学习", "活动列表", "应用入口与授权应用", "已删除内容管理"];
+    const groupMenus = ["集团云盘", "校本云盘", "个人云盘", "集团练习", "校本练习", "个人练习", "练习绑定", "集团试卷", "校本试卷", "个人试卷", "能力测评", "成绩管理", "集团资源", "校本资源", "个人资源", "功底考练习", "功底考配置", "考试配置", "课程学习", "活动列表", "授课使用明细", "应用入口与授权应用", "已删除内容管理"];
+    const roleData = {
+      teacher: { label: "授课老师", showSchedule: true, defaults: ["校本云盘", "个人云盘", "练习绑定", "班级列表", "学情列表"], options: teacherMenus },
+      branch: { label: "分校教研", showSchedule: false, defaults: ["集团云盘", "校本云盘", "练习绑定", "校本试卷", "校本资源"], options: branchMenus },
+      group: { label: "集团教研", showSchedule: false, defaults: ["集团云盘", "集团练习", "能力测评", "集团试卷", "集团资源"], options: groupMenus },
+      multi: { label: "多角色", showSchedule: true, defaults: ["校本云盘", "个人云盘", "练习绑定", "班级列表", "学情列表", "集团云盘", "集团练习", "能力测评"], options: [...new Set([...teacherMenus, ...branchMenus, ...groupMenus])] }
+    };
+    const roleState = Object.fromEntries(Object.keys(roleData).map(key => [key, [...roleData[key].defaults]]));
+    let currentRole = "teacher";
+
+    const resourceData = [
+      { title: "Let's learn 句型学习互动课件", id: "AI-10281", type: "interactive", subject: "英语", scope: "group", origin: "集团生产", image: "assets/resource-thumbnails/resource-1.png", views: 286, uses: 48 },
+      { title: "转盘读单词", id: "AI-10276", type: "interactive", subject: "英语", scope: "group", origin: "集团生产", image: "assets/resource-thumbnails/resource-2.png", views: 194, uses: 36 },
+      { title: "选词填空游戏", id: "AI-10263", type: "interactive", subject: "英语", scope: "group", origin: "集团收录", image: "assets/resource-thumbnails/resource-3.png", views: 168, uses: 29 },
+      { title: "太空创想课堂导入", id: "AI-10255", type: "image", subject: "美术", scope: "group", origin: "集团收录", image: "assets/resource-thumbnails/resource-4.png", views: 152, uses: 31 },
+      { title: "Looking for Taco 双语故事", id: "AI-10242", type: "interactive", subject: "双语故事表演", scope: "group", origin: "集团生产", image: "assets/resource-thumbnails/resource-5.png", views: 143, uses: 25 },
+      { title: "自然景物分类配对", id: "AI-10231", type: "interactive", subject: "语文", scope: "group", origin: "集团生产", image: "assets/resource-thumbnails/resource-6.png", views: 121, uses: 19 },
+      { title: "秋天的雨互动导入", id: "XB-2088", type: "interactive", subject: "语文", scope: "school", origin: "我生产的", image: "assets/resource-thumbnails/resource-1.png", views: 86, uses: 17 },
+      { title: "乘法口诀闯关", id: "XB-2076", type: "interactive", subject: "数学", scope: "school", origin: "我生产的", image: "assets/resource-thumbnails/resource-2.png", views: 72, uses: 13 },
+      { title: "校园英语情景对话", id: "XB-2054", type: "video", subject: "英语", scope: "school", origin: "集团收录", image: "assets/resource-thumbnails/resource-3.png", views: 65, uses: 9 },
+      { title: "我的课堂词语配对", id: "GR-036", type: "interactive", subject: "语文", scope: "personal", origin: "我生产的", image: "assets/resource-thumbnails/resource-5.png", views: 18, uses: 4 },
+      { title: "分数初步认识素材", id: "GR-029", type: "image", subject: "数学", scope: "personal", origin: "我生产的", image: "assets/resource-thumbnails/resource-6.png", views: 12, uses: 2 }
+    ];
+    let resourceScope = "group";
+    let resourceType = "all";
+    let resourceSubject = "all";
+    let resourceOrigin = "all";
+
+    const lessonData = {
+      "2026-08-03": [{ time: "16:00", className: "三年级（2）班", code: "BJ-302-02", students: 28, progress: "5/12", percent: 42, status: "未开始", statusClass: "wait" }],
+      "2026-08-05": [{ time: "18:30", className: "三年级（3）班", code: "BJ-303-03", students: 26, progress: "4/12", percent: 33, status: "未开始", statusClass: "wait" }],
+      "2026-08-10": [{ time: "16:00", className: "三年级（2）班", code: "BJ-302-02", students: 28, progress: "6/12", percent: 50, status: "已结束", statusClass: "in" }],
+      "2026-08-12": [{ time: "18:30", className: "三年级（3）班", code: "BJ-303-03", students: 26, progress: "5/12", percent: 42, status: "已结束", statusClass: "in" }],
+      "2026-08-17": [{ time: "16:00", className: "三年级（2）班", code: "BJ-302-02", students: 28, progress: "7/12", percent: 58, status: "已结束", statusClass: "in" }],
+      "2026-08-19": [{ time: "18:30", className: "三年级（3）班", code: "BJ-303-03", students: 26, progress: "5/12", percent: 42, status: "已结束", statusClass: "in" }],
+      "2026-08-24": [
+        { time: "16:00", className: "三年级（2）班", code: "BJ-302-02", students: 28, progress: "8/12", percent: 66, status: "进行中", statusClass: "in" },
+        { time: "18:30", className: "三年级（3）班", code: "BJ-303-03", students: 26, progress: "6/12", percent: 50, status: "未开始", statusClass: "wait" }
+      ],
+      "2026-08-26": [{ time: "18:30", className: "三年级（3）班", code: "BJ-303-03", students: 26, progress: "6/12", percent: 50, status: "未开始", statusClass: "wait" }],
+      "2026-08-31": [{ time: "16:00", className: "三年级（2）班", code: "BJ-302-02", students: 28, progress: "9/12", percent: 75, status: "未开始", statusClass: "wait" }]
+    };
+    const todayKey = "2026-08-24";
+    let selectedDateKey = todayKey;
+    let calendarYear = 2026;
+    let calendarMonth = 8;
+    let currentRecommendationIndex = 0;
+    let aiAgentMode = "default";
+    let selectedRecommendation = null;
+    const defaultAiPrompt = document.getElementById("aiPrompt").value;
+    const defaultAiResultHtml = document.getElementById("aiResult").innerHTML;
+
+    function toast(message) {
+      const el = document.getElementById("toast");
+      el.textContent = message;
+      el.classList.add("show");
+      window.clearTimeout(window.__toastTimer);
+      window.__toastTimer = window.setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    function setView(view) {
+      const viewId = view === "resources" ? "resourceView" : view + "View";
+      document.querySelectorAll(".view").forEach(el => el.classList.toggle("active", el.id === viewId));
+      document.querySelectorAll(".nav-item").forEach(el => el.classList.toggle("active", el.dataset.view === view));
+      document.getElementById("mainContent").classList.toggle("resource-page", view === "resources");
+      if (view === "home") {
+        document.getElementById("pageHeading").hidden = false;
+        document.getElementById("pageTitle").textContent = "首页";
+      } else {
+        document.getElementById("pageHeading").hidden = true;
+        renderResources();
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateRecommendationControls() {
+      const track = document.getElementById("recommendationTrack");
+      document.getElementById("recommendationPrev").disabled = track.scrollLeft <= 2;
+      document.getElementById("recommendationNext").disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+    }
+
+    function renderRecommendations() {
+      const track = document.getElementById("recommendationTrack");
+      track.innerHTML = aiCoursewareRecommendations.map((item, index) => `<article class="recommendation-card"><div class="recommendation-cover"><img src="${item.image}" alt="${item.title}封面" /><h3 title="${item.title}">${item.title}</h3><button class="recommendation-preview" data-recommendation-preview="${index}" aria-label="试玩${item.title}"><i data-lucide="circle-play"></i>试玩一下</button></div></article>`).join("");
+      lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
+      window.requestAnimationFrame(updateRecommendationControls);
+    }
+
+    function scrollRecommendations(direction) {
+      const track = document.getElementById("recommendationTrack");
+      const card = track.querySelector(".recommendation-card");
+      const distance = card ? (card.getBoundingClientRect().width + 10) * 3 : track.clientWidth * .85;
+      track.scrollBy({ left: direction * distance, behavior: "smooth" });
+    }
+
+    function openCoursewarePreview(index) {
+      const item = aiCoursewareRecommendations[index];
+      if (!item) return;
+      currentRecommendationIndex = index;
+      document.getElementById("coursewarePreviewTitle").textContent = item.title;
+      document.getElementById("coursewarePreviewLoading").hidden = false;
+      const frame = document.getElementById("coursewarePreviewFrame");
+      frame.title = `${item.title}试玩`;
+      frame.src = item.preview;
+      document.getElementById("coursewarePreview").hidden = false;
+    }
+
+    function closeCoursewarePreview() {
+      document.getElementById("coursewarePreview").hidden = true;
+      document.getElementById("coursewarePreviewFrame").src = "about:blank";
+    }
+
+    function useRecommendationStyle(index) {
+      const item = aiCoursewareRecommendations[index];
+      if (!item) return;
+      closeCoursewarePreview();
+      openAiDrawer("courseware", item);
+      toast(`正在生成「${item.title}」同款课件草稿`);
+      window.setTimeout(runAiAgent, 120);
+    }
+
+    function formatDateKey(year, month, day) {
+      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    }
+
+    function lessonActions() {
+      return `<div class="action-row"><button class="lesson-action" data-toast="打开绑定练习"><i data-lucide="link-2"></i>绑定练习</button><button class="lesson-action" data-toast="打开练习详情"><i data-lucide="list-checks"></i>练习详情</button><button class="lesson-action" data-toast="打开学情报告"><i data-lucide="file-chart-column"></i>学情报告</button><button class="lesson-action" data-toast="打开错题打印"><i data-lucide="printer"></i>错题打印</button></div>`;
+    }
+
+    function renderLessons() {
+      const lessons = lessonData[selectedDateKey] || [];
+      const [, month, day] = selectedDateKey.split("-").map(Number);
+      const isToday = selectedDateKey === todayKey;
+      document.getElementById("scheduleSummary").innerHTML = `<span>${month}月${day}日</span><strong>${lessons.length ? `${isToday ? "今日" : "当日"}${lessons.length}节课` : "当日无课"}</strong>`;
+      document.getElementById("lessonTableBody").innerHTML = lessons.length ? lessons.map(lesson => `<div class="lesson-row"><span class="lesson-time">${lesson.time}</span><div class="lesson-main"><strong>${lesson.className}</strong><em>班级编码 ${lesson.code}</em></div><span>${lesson.students}人</span><div class="progress-wrap"><span class="progress-text">${lesson.progress}</span><div class="progress-bar"><i style="width:${lesson.percent}%"></i></div></div><span class="status ${lesson.statusClass}">${lesson.status}</span>${lessonActions()}</div>`).join("") : `<div class="lesson-empty"><div><span class="lesson-empty-icon"><i data-lucide="calendar-x-2"></i></span><strong>${month}月${day}日暂无课程</strong><span>可选择带红点的日期查看班级课次</span></div></div>`;
+      lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
+      bindToastHandlers();
+    }
+
+    function renderCalendar() {
+      const grid = document.getElementById("calendarGrid");
+      const headers = ["一", "二", "三", "四", "五", "六", "日"];
+      const firstDay = new Date(calendarYear, calendarMonth - 1, 1).getDay();
+      const leading = (firstDay + 6) % 7;
+      const dayCount = new Date(calendarYear, calendarMonth, 0).getDate();
+      const cells = [...Array(leading).fill(null), ...Array.from({ length: dayCount }, (_, index) => index + 1)];
+      while (cells.length % 7) cells.push(null);
+      document.getElementById("calendarTitle").textContent = `${calendarYear}年${calendarMonth}月`;
+      grid.innerHTML = headers.map(day => `<span>${day}</span>`).join("") + cells.map(day => {
+        if (!day) return `<button aria-hidden="true" disabled></button>`;
+        const key = formatDateKey(calendarYear, calendarMonth, day);
+        return `<button class="${lessonData[key]?.length ? "has-course" : ""} ${selectedDateKey === key ? "selected" : ""}" data-date="${key}">${day}</button>`;
+      }).join("");
+      grid.querySelectorAll("[data-date]").forEach(button => button.addEventListener("click", () => {
+        selectedDateKey = button.dataset.date;
+        renderCalendar();
+        renderLessons();
+      }));
+    }
+
+    function shortcutMeta(label) {
+      return shortcutCatalog[label]?.path || "";
+    }
+
+    function renderShortcuts() {
+      const grid = document.getElementById("shortcutGrid");
+      const items = roleState[currentRole];
+      grid.innerHTML = items.length ? items.map(label => `<button class="shortcut" data-toast="将进入：${shortcutMeta(label)}"><span class="shortcut-icon"><i data-lucide="${shortcutCatalog[label]?.icon || "square-arrow-out-up-right"}"></i></span><span class="shortcut-copy"><span class="shortcut-label">${label}</span><span class="shortcut-meta">${shortcutMeta(label)}</span></span></button>`).join("") : `<div class="shortcut-empty">暂未设置常用菜单，请点击右上角编辑常用</div>`;
+      lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
+      bindToastHandlers();
+    }
+
+    let shortcutDraftOrder = [];
+
+    function groupedShortcutOptions(options) {
+      return options.reduce((groups, label) => {
+        const group = shortcutCatalog[label].group;
+        if (!groups[group]) groups[group] = [];
+        groups[group].push(label);
+        return groups;
+      }, {});
+    }
+
+    function renderShortcutEditor() {
+      const config = roleData[currentRole];
+      const groups = groupedShortcutOptions(config.options);
+      const selectedHtml = shortcutDraftOrder.length ? shortcutDraftOrder.map((label, index) => `<div class="selected-row"><span class="selected-index">${index + 1}</span><span class="selected-copy"><strong>${label}</strong><small>${shortcutMeta(label)}</small></span><span class="sort-actions"><button class="sort-button-icon" data-sort-index="${index}" data-sort-direction="-1" ${index === 0 ? "disabled" : ""} title="上移" aria-label="上移${label}"><i data-lucide="arrow-up"></i></button><button class="sort-button-icon" data-sort-index="${index}" data-sort-direction="1" ${index === shortcutDraftOrder.length - 1 ? "disabled" : ""} title="下移" aria-label="下移${label}"><i data-lucide="arrow-down"></i></button></span></div>`).join("") : `<div class="selected-empty">尚未选择首页常用菜单</div>`;
+      const availableHtml = Object.entries(groups).map(([group, labels]) => `<section class="menu-group"><h4>${group}</h4><div class="option-grid">${labels.map(label => `<label class="option"><input type="checkbox" value="${label}" ${shortcutDraftOrder.includes(label) ? "checked" : ""} /><span><strong>${label}</strong><small>${shortcutMeta(label)}</small></span></label>`).join("")}</div></section>`).join("");
+      document.getElementById("shortcutOptions").innerHTML = `<div class="role-block"><div class="selection-head"><h3>已选常用菜单（${shortcutDraftOrder.length}/8）</h3><span>使用上下箭头调整首页展示顺序</span></div><div class="selected-list">${selectedHtml}</div><div class="available-head"><h3>${config.label}可操作的二级菜单全集</h3><span>按角色权限映射，勾选不会影响左侧菜单</span></div><div class="menu-groups">${availableHtml}</div></div>`;
+      document.querySelectorAll("#shortcutOptions input[type='checkbox']").forEach(input => input.addEventListener("change", () => {
+        if (input.checked) {
+          if (shortcutDraftOrder.length >= 8) { input.checked = false; toast("最多选择8个快捷入口"); return; }
+          shortcutDraftOrder.push(input.value);
+        } else {
+          shortcutDraftOrder = shortcutDraftOrder.filter(label => label !== input.value);
+        }
+        renderShortcutEditor();
+      }));
+      document.querySelectorAll("[data-sort-index]").forEach(button => button.addEventListener("click", () => {
+        const from = Number(button.dataset.sortIndex);
+        const to = from + Number(button.dataset.sortDirection);
+        [shortcutDraftOrder[from], shortcutDraftOrder[to]] = [shortcutDraftOrder[to], shortcutDraftOrder[from]];
+        renderShortcutEditor();
+      }));
+      lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
+    }
+
+    function openShortcutModal() {
+      const config = roleData[currentRole];
+      shortcutDraftOrder = [...roleState[currentRole]];
+      document.getElementById("modalDesc").textContent = `当前为${config.label}视图。仅展示可独立打开的二级菜单，不包含必须先选择班级或课次的操作按钮。`;
+      renderShortcutEditor();
+      document.getElementById("shortcutModal").hidden = false;
+    }
+
+    function closeShortcutModal() { document.getElementById("shortcutModal").hidden = true; }
+    function saveShortcuts() {
+      roleState[currentRole] = [...shortcutDraftOrder];
+      renderShortcuts();
+      closeShortcutModal();
+      toast("常用菜单及顺序已更新");
+    }
+
+    function renderResources() {
+      const search = document.getElementById("resourceSearch").value.trim().toLowerCase();
+      const filtered = resourceData.filter(item => item.scope === resourceScope && (resourceType === "all" || item.type === resourceType) && (resourceSubject === "all" || item.subject === resourceSubject) && (resourceOrigin === "all" || item.origin === resourceOrigin) && (!search || item.title.toLowerCase().includes(search) || item.id.toLowerCase().includes(search) || item.subject.toLowerCase().includes(search)));
+      document.getElementById("resourceGridPage").innerHTML = filtered.length ? filtered.map(item => `<article class="resource-tile"><div class="resource-cover"><img src="${item.image}" alt="${item.title}" /></div><div class="resource-tile-body"><div class="resource-title-line"><span class="resource-id">ID</span><h3>${item.title}</h3></div><div class="resource-tile-meta"><span>${item.subject} · ${item.origin}</span><span class="resource-stats"><span><i data-lucide="eye"></i>${item.views}</span><span><i data-lucide="bookmark"></i>${item.uses}</span></span></div><div class="resource-tile-actions"><button data-toast="查看${item.title}">查看资源</button><button data-toast="复制${item.title}到个人资源">复制到个人</button></div></div></article>`).join("") : `<div class="resource-empty"><div><i data-lucide="search-x"></i><div>没有找到匹配的资源</div></div></div>`;
+      const untouched = !search && resourceType === "all" && resourceSubject === "all" && resourceOrigin === "all";
+      const scopeTotals = { group: 1242, school: 368, personal: 42 };
+      document.getElementById("resourceTotal").textContent = `共 ${untouched ? scopeTotals[resourceScope] : filtered.length} 条`;
+      lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
+      bindToastHandlers();
+    }
+
+    function openAiDrawer(mode = "default", recommendation = null) {
+      const previousMode = aiAgentMode;
+      aiAgentMode = mode;
+      selectedRecommendation = recommendation;
+      const title = document.getElementById("aiDrawerTitle");
+      const subtitle = document.getElementById("aiDrawerSubtitle");
+      const promptBox = document.querySelector(".ai-prompt-box");
+      const prompt = document.getElementById("aiPrompt");
+      const result = document.getElementById("aiResult");
+      if (mode === "courseware" && recommendation) {
+        title.textContent = "AI互动课件同款生成";
+        subtitle.textContent = "参考现有玩法，生成可继续编辑的个人课件草稿";
+        prompt.value = `参考《${recommendation.title}》的互动玩法与视觉结构，生成一份同款AI互动课件。保留核心互动机制，教学内容替换为我接下来提供的课程内容。`;
+        result.hidden = true;
+        result.innerHTML = "";
+        promptBox.classList.add("courseware-mode");
+      } else {
+        title.textContent = "iTeach AI教学Agent";
+        subtitle.textContent = "理解教学目标，调用你有权限的内容与业务能力";
+        promptBox.classList.remove("courseware-mode");
+        if (previousMode !== "default") {
+          prompt.value = defaultAiPrompt;
+          result.innerHTML = defaultAiResultHtml;
+          result.hidden = true;
+        }
+      }
+      document.getElementById("aiDrawer").hidden = false;
+      prompt.focus();
+    }
+
+    function closeAiDrawer() {
+      document.getElementById("aiDrawer").hidden = true;
+    }
+
+    function runAiAgent() {
+      const prompt = document.getElementById("aiPrompt").value.trim();
+      if (!prompt) { toast("请先描述要完成的教学工作"); return; }
+      const button = document.getElementById("runAiAgent");
+      button.disabled = true;
+      button.textContent = "正在分析...";
+      window.setTimeout(() => {
+        const result = document.getElementById("aiResult");
+        if (aiAgentMode === "courseware" && selectedRecommendation) {
+          const index = aiCoursewareRecommendations.indexOf(selectedRecommendation);
+          result.innerHTML = `<div class="ai-result-head"><div><h3>同款课件草稿已生成</h3><p>已继承《${selectedRecommendation.title}》的核心玩法和互动结构，内容仍可继续调整。</p></div><span class="ai-result-status"><i data-lucide="circle-check"></i>草稿已就绪</span></div><div class="ai-package"><div class="ai-package-item"><span class="ai-package-icon"><i data-lucide="gamepad-2"></i></span><div class="ai-package-copy"><strong>${selectedRecommendation.title} · 同款版</strong><span>个人草稿 · 未发布 · 可继续编辑</span></div><button class="ai-package-action" data-courseware-result-preview="${index}">试玩草稿</button></div></div><div class="ai-result-actions"><button class="ai-secondary" data-toast="打开AI互动课件编辑器">继续编辑</button><button class="ai-primary" data-toast="同款草稿已保存到个人云盘">保存到个人云盘</button></div>`;
+          result.querySelector("[data-courseware-result-preview]").addEventListener("click", event => {
+            closeAiDrawer();
+            openCoursewarePreview(Number(event.currentTarget.dataset.coursewareResultPreview));
+          });
+        } else if (!result.innerHTML.trim()) {
+          result.innerHTML = defaultAiResultHtml;
+        }
+        result.hidden = false;
+        button.disabled = false;
+        button.innerHTML = `<i data-lucide="send"></i>重新执行`;
+        lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
+        bindToastHandlers();
+        result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 650);
+    }
+
+    function bindToastHandlers() {
+      document.querySelectorAll("[data-toast]").forEach(el => {
+        if (el.dataset.bound) return;
+        el.dataset.bound = "true";
+        el.addEventListener("click", event => { event.stopPropagation(); toast(el.dataset.toast); });
+      });
+    }
+
+    document.querySelectorAll("[data-view]").forEach(el => el.addEventListener("click", () => setView(el.dataset.view)));
+    document.querySelectorAll("[data-role]").forEach(button => button.addEventListener("click", () => {
+      currentRole = button.dataset.role;
+      document.querySelectorAll("[data-role]").forEach(item => item.classList.toggle("active", item.dataset.role === currentRole));
+      document.getElementById("classSchedule").hidden = !roleData[currentRole].showSchedule;
+      renderShortcuts();
+      toast(`已切换为${roleData[currentRole].label}原型预览`);
+    }));
+    let previewClickCount = 0;
+    let previewClickTimer;
+    document.getElementById("rolePreview").addEventListener("click", event => {
+      const preview = event.currentTarget;
+      if (!preview.classList.contains("is-hidden")) return;
+      event.preventDefault();
+      event.stopPropagation();
+      previewClickCount += 1;
+      window.clearTimeout(previewClickTimer);
+      previewClickTimer = window.setTimeout(() => { previewClickCount = 0; }, 900);
+      if (previewClickCount === 3) {
+        preview.classList.remove("is-hidden");
+        previewClickCount = 0;
+        toast("已显示角色预览切换");
+      }
+    }, true);
+    document.getElementById("editShortcuts").addEventListener("click", openShortcutModal);
+    document.getElementById("closeModal").addEventListener("click", closeShortcutModal);
+    document.getElementById("cancelModal").addEventListener("click", closeShortcutModal);
+    document.getElementById("saveModal").addEventListener("click", saveShortcuts);
+    document.getElementById("shortcutModal").addEventListener("click", event => { if (event.target.id === "shortcutModal") closeShortcutModal(); });
+    document.getElementById("recommendationPrev").addEventListener("click", () => scrollRecommendations(-1));
+    document.getElementById("recommendationNext").addEventListener("click", () => scrollRecommendations(1));
+    document.getElementById("recommendationTrack").addEventListener("scroll", updateRecommendationControls, { passive: true });
+    window.addEventListener("resize", updateRecommendationControls);
+    document.getElementById("recommendationTrack").addEventListener("click", event => {
+      const previewButton = event.target.closest("[data-recommendation-preview]");
+      if (previewButton) openCoursewarePreview(Number(previewButton.dataset.recommendationPreview));
+    });
+    document.getElementById("closeCoursewarePreview").addEventListener("click", closeCoursewarePreview);
+    document.getElementById("cancelCoursewarePreview").addEventListener("click", closeCoursewarePreview);
+    document.getElementById("coursewarePreview").addEventListener("click", event => { if (event.target.id === "coursewarePreview") closeCoursewarePreview(); });
+    document.getElementById("coursewarePreviewFrame").addEventListener("load", () => { document.getElementById("coursewarePreviewLoading").hidden = true; });
+    document.getElementById("previewSameStyle").addEventListener("click", () => useRecommendationStyle(currentRecommendationIndex));
+    document.getElementById("aiAssistant").addEventListener("click", () => openAiDrawer("default"));
+    document.getElementById("closeAiDrawer").addEventListener("click", closeAiDrawer);
+    document.getElementById("aiDrawer").addEventListener("click", event => { if (event.target.id === "aiDrawer") closeAiDrawer(); });
+    document.getElementById("runAiAgent").addEventListener("click", runAiAgent);
+    document.querySelectorAll(".ai-suggestion").forEach(button => button.addEventListener("click", () => { document.getElementById("aiPrompt").value = button.textContent; document.getElementById("aiPrompt").focus(); }));
+    document.querySelectorAll("[data-external-url]").forEach(card => {
+      const openExternal = () => window.open(card.dataset.externalUrl, "_blank", "noopener,noreferrer");
+      card.addEventListener("click", openExternal);
+      card.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openExternal(); } });
+    });
+    document.querySelectorAll("[data-calendar-shift]").forEach(button => button.addEventListener("click", () => {
+      calendarMonth += Number(button.dataset.calendarShift);
+      if (calendarMonth < 1) { calendarMonth = 12; calendarYear -= 1; }
+      if (calendarMonth > 12) { calendarMonth = 1; calendarYear += 1; }
+      selectedDateKey = formatDateKey(calendarYear, calendarMonth, 1);
+      renderCalendar();
+      renderLessons();
+    }));
+    document.getElementById("todayButton").addEventListener("click", () => { calendarYear = 2026; calendarMonth = 8; selectedDateKey = todayKey; renderCalendar(); renderLessons(); });
+    document.getElementById("resourceSearch").addEventListener("input", renderResources);
+    document.querySelectorAll("[data-resource-scope]").forEach(button => button.addEventListener("click", () => { resourceScope = button.dataset.resourceScope; document.querySelectorAll("[data-resource-scope]").forEach(item => item.classList.toggle("active", item === button)); renderResources(); }));
+    document.querySelectorAll("[data-resource-type]").forEach(button => button.addEventListener("click", () => { resourceType = button.dataset.resourceType; document.querySelectorAll("[data-resource-type]").forEach(item => item.classList.toggle("active", item === button)); renderResources(); }));
+    document.querySelectorAll("[data-resource-subject]").forEach(button => button.addEventListener("click", () => { resourceSubject = button.dataset.resourceSubject; document.querySelectorAll("[data-resource-subject]").forEach(item => item.classList.toggle("active", item === button)); renderResources(); }));
+    document.querySelectorAll("[data-resource-origin]").forEach(button => button.addEventListener("click", () => { resourceOrigin = button.dataset.resourceOrigin; document.querySelectorAll("[data-resource-origin]").forEach(item => item.classList.toggle("active", item === button)); renderResources(); }));
+    document.querySelectorAll("[data-resource-mode]").forEach(button => button.addEventListener("click", () => { document.querySelectorAll("[data-resource-mode]").forEach(item => item.classList.toggle("active", item === button)); toast(`已切换到${button.textContent}`); }));
+    document.addEventListener("keydown", event => {
+      if (event.key !== "Escape") return;
+      if (!document.getElementById("coursewarePreview").hidden) closeCoursewarePreview();
+      else if (!document.getElementById("aiDrawer").hidden) closeAiDrawer();
+      else if (!document.getElementById("shortcutModal").hidden) closeShortcutModal();
+    });
+
+    document.getElementById("classSchedule").hidden = !roleData[currentRole].showSchedule;
+    renderRecommendations();
+    renderCalendar();
+    renderLessons();
+    renderShortcuts();
+    renderResources();
+    bindToastHandlers();
+    lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
+  </script>
+</body>
+</html>
