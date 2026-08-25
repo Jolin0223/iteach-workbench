@@ -827,7 +827,7 @@
 
     function renderRecommendations() {
       const track = document.getElementById("recommendationTrack");
-      track.innerHTML = aiCoursewareRecommendations.map((item, index) => `<article class="recommendation-card"><div class="recommendation-cover"><img src="${item.image}" alt="${item.title}封面" /><h3 title="${item.title}">${item.title}</h3><button class="recommendation-preview" data-recommendation-preview="${index}" aria-label="试玩${item.title}"><i data-lucide="circle-play"></i>试玩一下</button></div></article>`).join("");
+      track.innerHTML = aiCoursewareRecommendations.map((item, index) => `<article class="recommendation-card"><div class="recommendation-cover"><img src="${item.image}" alt="${item.title}封面" loading="lazy" decoding="async" /><h3 title="${item.title}">${item.title}</h3><button class="recommendation-preview" data-recommendation-preview="${index}" aria-label="试玩${item.title}"><i data-lucide="circle-play"></i>试玩一下</button></div></article>`).join("");
       lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
       window.requestAnimationFrame(updateRecommendationControls);
     }
