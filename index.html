@@ -69,11 +69,11 @@
     .nav-item svg { width: 18px; height: 18px; flex: 0 0 auto; stroke-width: 1.9; }
     .nav-item.active svg { stroke-width: 2.4; }
 
-    .main { min-width: 0; padding: 18px 24px 36px; }
+    .main { min-width: 0; padding: 14px 24px 36px; }
     .main.resource-page { position: relative; padding-top: 12px; }
     .main.resource-page .topbar { position: absolute; top: 12px; right: 24px; z-index: 4; height: 38px; margin: 0; }
     .main.resource-page .resource-title-row { padding-top: 12px; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; height: 50px; margin-bottom: 16px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; height: 38px; margin-bottom: 14px; }
     .page-heading { display: flex; align-items: center; gap: 12px; }
     .page-heading h1 { margin: 0; font-size: 22px; letter-spacing: 0; }
     .top-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
@@ -82,8 +82,12 @@
     .preview-switcher span { padding: 0 7px; color: #8996a8; font-size: 11px; font-weight: 700; }
     .preview-switcher button { height: 27px; padding: 0 9px; border-radius: 6px; color: #68758a; background: transparent; font-size: 12px; }
     .preview-switcher button.active { color: var(--blue); background: #fff; box-shadow: var(--shadow-small); font-weight: 800; }
-    .ai-top { height: 38px; display: inline-flex; align-items: center; gap: 7px; padding: 0 13px; color: #225bd4; background: #fff; border: 1px solid #cfe0ff; border-radius: 8px; font-weight: 800; }
-    .ai-top svg { width: 17px; height: 17px; }
+    .ai-top { position: relative; height: 38px; display: inline-flex; align-items: center; gap: 8px; padding: 0 12px 0 7px; color: #174fbf; background: linear-gradient(135deg, #fff 15%, #f1f7ff); border: 1px solid #a9c8ff; border-radius: 8px; box-shadow: 0 4px 12px rgba(35,94,196,.09), inset 0 1px 0 rgba(255,255,255,.9); font-size: 13px; font-weight: 850; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+    .ai-top:hover { transform: translateY(-1px); color: #0d4fd3; border-color: #74a4fa; box-shadow: 0 7px 18px rgba(35,94,196,.16), inset 0 1px 0 rgba(255,255,255,.95); }
+    .ai-top:active { transform: translateY(0); }
+    .ai-top-mark { width: 25px; height: 25px; display: grid; place-items: center; color: #fff; background: linear-gradient(145deg, #2d77f4, #1559d6); border-radius: 7px; box-shadow: 0 3px 8px rgba(24,89,211,.22); }
+    .ai-top-mark svg { width: 14px; height: 14px; stroke-width: 2.2; }
+    .ai-top-label { white-space: nowrap; }
     .icon-button { width: 38px; height: 38px; display: grid; place-items: center; color: #475770; background: transparent; border-radius: 8px; position: relative; }
     .icon-button:hover { background: #edf3fb; color: var(--blue); }
     .icon-button svg { width: 20px; height: 20px; }
@@ -135,9 +139,10 @@
     .resource-count { grid-column: 2; display: block; margin-top: 4px; color: #1d2d49; font-size: 20px; font-weight: 850; line-height: 1; }
     .resource-count small { margin-left: 2px; color: #738096; font-size: 11px; font-weight: 700; }
 
-    .shortcuts, .ai-courseware-recommendations { min-width: 0; padding: 16px 20px 18px; }
-    .ai-courseware-recommendations { overflow: hidden; }
-    .shortcuts .panel-head, .ai-courseware-recommendations .panel-head { margin-bottom: 13px; }
+    .shortcuts { min-width: 0; padding: 16px 20px 18px; }
+    .ai-courseware-recommendations { min-width: 0; overflow: hidden; padding: 18px 20px 20px; }
+    .shortcuts .panel-head { margin-bottom: 13px; }
+    .ai-courseware-recommendations .panel-head { margin-bottom: 14px; }
     .shortcut-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(178px, 1fr)); gap: 10px; }
     .shortcut { min-height: 82px; display: flex; align-items: center; justify-content: flex-start; gap: 12px; min-width: 0; padding: 13px 14px; color: #25334a; background: linear-gradient(145deg, #fff, #f8fbff); border: 1px solid #e7edf5; border-radius: 8px; transition: .18s ease; text-align: left; }
     .shortcut:hover { transform: translateY(-2px); border-color: #b8d2ff; box-shadow: 0 7px 17px rgba(36,107,254,.11); }
@@ -159,15 +164,15 @@
     .carousel-control svg { width: 16px; height: 16px; }
     .recommendation-track { width: 100%; min-width: 0; display: flex; gap: 10px; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-inline: contain; }
     .recommendation-track::-webkit-scrollbar { display: none; }
-    .recommendation-card { position: relative; height: 82px; aspect-ratio: 16 / 9; flex: 0 0 auto; overflow: hidden; background: #edf3fb; border: 1px solid #dce5f0; border-radius: 8px; scroll-snap-align: start; transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+    .recommendation-card { position: relative; height: 138px; aspect-ratio: 16 / 9; flex: 0 0 auto; overflow: hidden; background: #edf3fb; border: 1px solid #dce5f0; border-radius: 8px; scroll-snap-align: start; transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
     .recommendation-card:hover, .recommendation-card:focus-within { transform: translateY(-2px); border-color: #9fc1f7; box-shadow: 0 8px 18px rgba(35,91,181,.16); }
     .recommendation-cover { position: absolute; inset: 0; overflow: hidden; background: #edf3fb; }
     .recommendation-cover::before { content: ""; position: absolute; inset: 0; z-index: 1; background: rgba(17,38,70,.34); opacity: 0; transition: opacity .2s ease; }
     .recommendation-cover::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 38px; background: linear-gradient(180deg, transparent, rgba(12,31,58,.78)); }
-    .recommendation-cover img { width: 100%; height: 100%; display: block; object-fit: contain; }
-    .recommendation-card h3 { position: absolute; z-index: 2; left: 9px; right: 9px; bottom: 6px; overflow: hidden; margin: 0; color: #fff; font-size: 11px; font-weight: 800; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1px 4px rgba(0,0,0,.28); }
-    .recommendation-preview { position: absolute; z-index: 3; left: 50%; top: 46%; height: 27px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 0 9px; color: #1f63d8; background: rgba(255,255,255,.96); border: 1px solid rgba(255,255,255,.9); border-radius: 6px; box-shadow: 0 5px 14px rgba(8,29,63,.2); font-size: 10px; font-weight: 800; white-space: nowrap; opacity: 0; pointer-events: none; transform: translate(-50%, -42%) scale(.96); transition: opacity .18s ease, transform .18s ease; }
-    .recommendation-preview svg { width: 12px; height: 12px; }
+    .recommendation-cover img { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .recommendation-card h3 { position: absolute; z-index: 2; left: 11px; right: 11px; bottom: 9px; overflow: hidden; margin: 0; color: #fff; font-size: 13px; font-weight: 800; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1px 5px rgba(0,0,0,.32); }
+    .recommendation-preview { position: absolute; z-index: 3; left: 50%; top: 46%; height: 32px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 0 12px; color: #1f63d8; background: rgba(255,255,255,.97); border: 1px solid rgba(255,255,255,.92); border-radius: 6px; box-shadow: 0 7px 18px rgba(8,29,63,.22); font-size: 11px; font-weight: 800; white-space: nowrap; opacity: 0; pointer-events: none; transform: translate(-50%, -42%) scale(.96); transition: opacity .18s ease, transform .18s ease; }
+    .recommendation-preview svg { width: 14px; height: 14px; }
     .recommendation-card:hover .recommendation-cover::before, .recommendation-card:focus-within .recommendation-cover::before { opacity: 1; }
     .recommendation-card:hover .recommendation-preview, .recommendation-card:focus-within .recommendation-preview { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
 
@@ -401,22 +406,41 @@
     .option input { accent-color: var(--blue); }
     .option:has(input:checked) { color: #1f5fd5; background: var(--blue-soft); border-color: #bcd4ff; }
     .info-card[data-external-url] { cursor: pointer; }
-    .courseware-preview-backdrop { position: fixed; inset: 0; z-index: 55; display: grid; place-items: center; padding: 16px; background: rgba(18,34,58,.55); }
-    .courseware-preview-modal { width: min(980px, calc(100vw - 32px)); height: min(720px, calc(100vh - 32px)); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; background: #fff; border: 1px solid #dce5f1; border-radius: 10px; box-shadow: 0 28px 90px rgba(12,31,61,.3); }
-    .courseware-preview-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; border-bottom: 1px solid #e5ebf3; }
-    .courseware-preview-head span { display: block; margin-bottom: 3px; color: #246bfe; font-size: 10px; font-weight: 850; }
-    .courseware-preview-head h2 { margin: 0; color: #1c2d47; font-size: 17px; }
-    .courseware-preview-close { width: 32px; height: 32px; display: grid; place-items: center; flex: 0 0 auto; color: #617188; background: #f1f5fa; border-radius: 6px; }
+    .courseware-preview-backdrop { position: fixed; inset: 0; z-index: 55; display: grid; place-items: center; padding: 20px; background: rgba(28,44,66,.5); backdrop-filter: blur(7px); }
+    .courseware-preview-modal { width: min(1240px, calc(100vw - 40px)); max-height: calc(100vh - 40px); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; background: #fff; border: 1px solid #dce5f1; border-radius: 12px; box-shadow: 0 30px 90px rgba(15,33,61,.28); }
+    .courseware-preview-head { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 18px; border-bottom: 1px solid #e7edf4; background: #fff; }
+    .courseware-preview-head span { display: block; margin-bottom: 4px; color: #1591bc; font-size: 11px; font-weight: 850; }
+    .courseware-preview-head h2 { margin: 0; color: #17253b; font-size: 18px; letter-spacing: 0; }
+    .courseware-preview-close { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 auto; color: #65758a; background: #fff; border: 1px solid #dbe5ef; border-radius: 7px; transition: .18s ease; }
+    .courseware-preview-close:hover { color: #245fc8; background: #f3f7fd; border-color: #bcd1f2; }
     .courseware-preview-close svg { width: 17px; height: 17px; }
-    .courseware-preview-stage { position: relative; min-height: 0; overflow: hidden; background: #eef3f8; }
-    .courseware-preview-stage iframe { position: relative; z-index: 1; width: 100%; height: 100%; display: block; border: 0; background: #fff; }
-    .courseware-preview-loading { position: absolute; inset: 0; display: grid; place-items: center; color: #718198; font-size: 12px; }
-    .courseware-preview-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; border-top: 1px solid #e5ebf3; background: #fff; }
-    .courseware-preview-footer p { margin: 0; color: #7a899d; font-size: 11px; }
-    .courseware-preview-footer-actions { display: flex; gap: 8px; }
-    .courseware-preview-footer button { height: 34px; padding: 0 13px; border-radius: 6px; font-size: 12px; font-weight: 800; }
-    .courseware-preview-cancel { color: #586980; background: #f1f5f9; }
-    .courseware-preview-same { display: inline-flex; align-items: center; gap: 5px; color: #fff; background: #f58b2c; }
+    .courseware-preview-body { min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 316px; gap: 16px; align-items: start; overflow: auto; padding: 16px; background: #f7f9fc; }
+    .courseware-preview-stage { position: relative; min-width: 0; aspect-ratio: 16 / 9; overflow: hidden; background: #fff; border: 1px solid #dfe7f1; border-radius: 8px; box-shadow: 0 9px 24px rgba(31,56,89,.09); }
+    .courseware-preview-stage iframe { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; display: block; border: 0; background: #fff; }
+    .courseware-preview-loading { position: absolute; inset: 0; display: grid; place-items: center; color: #718198; background: #f7faff; font-size: 12px; }
+    .courseware-preview-meta { min-height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 12px; background: #fff; border: 1px solid #d9e5ef; border-radius: 8px; }
+    .preview-meta-block { padding: 10px; background: #fbfdff; border: 1px solid #e1e9f1; border-radius: 7px; }
+    .preview-meta-line { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .preview-meta-label { flex: 0 0 auto; color: #8492a5; font-size: 11px; }
+    .preview-meta-value { min-width: 0; color: #28394f; font-size: 11px; font-weight: 800; }
+    .preview-material-id { overflow: hidden; flex: 1; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; text-overflow: ellipsis; white-space: nowrap; }
+    .preview-copy-id { width: 25px; height: 25px; display: grid; place-items: center; flex: 0 0 auto; color: #68809a; background: #fff; border: 1px solid #dce6ef; border-radius: 6px; }
+    .preview-copy-id:hover { color: var(--blue); border-color: #b9d1fb; }
+    .preview-copy-id svg { width: 13px; height: 13px; }
+    .preview-scope { display: inline-flex; margin-top: 8px; padding: 4px 8px; color: #167ba0; background: #eefaff; border: 1px solid #bce6f3; border-radius: 20px; font-size: 11px; font-weight: 800; }
+    .preview-meta-title { display: block; margin-bottom: 8px; color: #8492a5; font-size: 11px; }
+    .preview-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .preview-tag { padding: 4px 7px; color: #177d78; background: #edfbf8; border: 1px solid #c4eee7; border-radius: 5px; font-size: 10px; font-weight: 700; }
+    .preview-tag.knowledge { color: #566981; background: #f3f6fa; border-color: #dfe6ee; }
+    .preview-meta-facts { display: grid; gap: 7px; margin-top: auto; }
+    .preview-fact { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 7px; color: #29394f; font-size: 10px; line-height: 1.35; }
+    .preview-fact span:first-child { color: #8492a5; }
+    .courseware-preview-footer { min-height: 64px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 11px 18px; border-top: 1px solid #e5ebf3; background: #fff; }
+    .courseware-preview-footer button { height: 36px; padding: 0 14px; border-radius: 7px; font-size: 12px; font-weight: 800; }
+    .courseware-preview-cancel { color: #586980; background: #fff; border: 1px solid #d7e1ec; }
+    .courseware-preview-cancel:hover { background: #f5f8fb; }
+    .courseware-preview-same { display: inline-flex; align-items: center; gap: 6px; color: #fff; background: #ff8a1e; box-shadow: 0 5px 13px rgba(244,130,27,.2); }
+    .courseware-preview-same:hover { background: #f47c10; }
     .courseware-preview-same svg { width: 14px; height: 14px; }
     .modal-footer { position: sticky; bottom: -24px; z-index: 2; display: flex; align-items: center; justify-content: flex-end; gap: 9px; margin: 18px -24px -24px; padding: 14px 24px; background: rgba(255,255,255,.97); border-top: 1px solid #edf1f6; backdrop-filter: blur(10px); }
     .modal-footer button { height: 36px; padding: 0 15px; border-radius: 7px; font-size: 13px; font-weight: 800; }
@@ -434,6 +458,12 @@
       .lesson-action { padding: 0 4px; font-size: 10px; }
       .lesson-action svg { display: none; }
       .shortcut-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    }
+    @media (max-width: 1100px) {
+      .courseware-preview-backdrop { padding: 14px; }
+      .courseware-preview-modal { width: calc(100vw - 28px); max-height: calc(100vh - 28px); }
+      .courseware-preview-body { grid-template-columns: minmax(0, 1fr) 270px; gap: 12px; padding: 12px; }
+      .courseware-preview-meta { padding: 10px; }
     }
   </style>
 </head>
@@ -499,7 +529,7 @@
             <button data-role="group">集团教研</button>
             <button data-role="multi">多角色</button>
           </div>
-          <button class="ai-top" id="aiAssistant"><i data-lucide="sparkles"></i>AI助手</button>
+          <button class="ai-top" id="aiAssistant"><span class="ai-top-mark"><i data-lucide="sparkles"></i></span><span class="ai-top-label">AI助手</span></button>
           <div class="user"><span class="avatar">张</span><span>张老师</span><i data-lucide="chevron-down"></i></div>
         </div>
       </header>
@@ -597,9 +627,18 @@
   <div class="modal-backdrop" id="shortcutModal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><div><h2 id="modalTitle">编辑常用菜单</h2><p id="modalDesc">选择要显示在首页的二级菜单，并调整展示顺序。</p></div><button class="modal-close" id="closeModal" aria-label="关闭"><i data-lucide="x"></i></button></div><div id="shortcutOptions"></div><div class="modal-footer"><button class="cancel" id="cancelModal">取消</button><button class="save" id="saveModal">保存设置</button></div></div></div>
   <div class="courseware-preview-backdrop" id="coursewarePreview" hidden>
     <section class="courseware-preview-modal" role="dialog" aria-modal="true" aria-labelledby="coursewarePreviewTitle">
-      <header class="courseware-preview-head"><div><span>AI互动课件试玩</span><h2 id="coursewarePreviewTitle">课件标题</h2></div><button class="courseware-preview-close" id="closeCoursewarePreview" aria-label="关闭课件试玩"><i data-lucide="x"></i></button></header>
-      <div class="courseware-preview-stage"><div class="courseware-preview-loading" id="coursewarePreviewLoading">正在加载互动课件...</div><iframe id="coursewarePreviewFrame" title="AI互动课件试玩" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock" allow="fullscreen" loading="eager"></iframe></div>
-      <footer class="courseware-preview-footer"><p>试玩不会修改原课件；生成同款前仍可调整教学内容。</p><div class="courseware-preview-footer-actions"><button class="courseware-preview-cancel" id="cancelCoursewarePreview">关闭</button><button class="courseware-preview-same" id="previewSameStyle"><i data-lucide="wand-sparkles"></i>一键同款</button></div></footer>
+      <header class="courseware-preview-head"><div><span>互动课件资源</span><h2 id="coursewarePreviewTitle">课件标题</h2></div><button class="courseware-preview-close" id="closeCoursewarePreview" aria-label="关闭课件试玩"><i data-lucide="x"></i></button></header>
+      <div class="courseware-preview-body">
+        <div class="courseware-preview-stage"><div class="courseware-preview-loading" id="coursewarePreviewLoading">正在加载互动课件...</div><iframe id="coursewarePreviewFrame" title="AI互动课件试玩" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock" allow="fullscreen" loading="eager"></iframe></div>
+        <aside class="courseware-preview-meta" aria-label="课件属性">
+          <div class="preview-meta-block"><div class="preview-meta-line"><span class="preview-meta-label">素材ID</span><code class="preview-meta-value preview-material-id" id="coursewareMaterialId">--</code><button class="preview-copy-id" id="copyCoursewareId" aria-label="复制素材ID"><i data-lucide="copy"></i></button></div></div>
+          <div class="preview-meta-block"><span class="preview-meta-title">资源归属</span><strong class="preview-scope" id="coursewareScope">--</strong></div>
+          <div class="preview-meta-block"><span class="preview-meta-title">内容标签</span><div class="preview-tags" id="coursewareTags"></div></div>
+          <div class="preview-meta-block"><span class="preview-meta-title">知识点</span><div class="preview-tags" id="coursewareKnowledge"></div></div>
+          <div class="preview-meta-block preview-meta-facts"><div class="preview-fact"><span>上传</span><strong id="coursewareUploader">--</strong></div><div class="preview-fact"><span>修改</span><strong id="coursewareUpdated">--</strong></div><div class="preview-fact"><span>大小</span><strong id="coursewareSize">--</strong></div></div>
+        </aside>
+      </div>
+      <footer class="courseware-preview-footer"><button class="courseware-preview-cancel" id="cancelCoursewarePreview">关闭</button><button class="courseware-preview-same" id="previewSameStyle"><i data-lucide="copy-plus"></i>一键同款</button></footer>
     </section>
   </div>
   <div class="ai-drawer-backdrop" id="aiDrawer" hidden>
@@ -616,16 +655,16 @@
 
   <script>
     const aiCoursewareRecommendations = [
-      { title: "堵车华容道-车辆逃脱", image: "assets/ai-courseware-recommendations/recommendation-01.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/f57d9d4ceeae49c785b2f4ba8797f8ca/index.html" },
-      { title: "四宫格数独-数字填格闯关", image: "assets/ai-courseware-recommendations/recommendation-02.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/72dd870d6072461581081877c26ab014/index.html" },
-      { title: "颜色序列推理", image: "assets/ai-courseware-recommendations/recommendation-03.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/ff2095eb1dc04b7fa71bc624d6bfceef/index.html" },
-      { title: "分数披萨店-分数配餐", image: "assets/ai-courseware-recommendations/recommendation-04.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/fraction-pizza.html" },
-      { title: "六宫珍珠连线-黑白珍珠回路", image: "assets/ai-courseware-recommendations/recommendation-05.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/12fa58e91e3b45618e49d0636e04d717/index.html" },
-      { title: "星际解码-数织谜题", image: "assets/ai-courseware-recommendations/recommendation-06.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/eda9d71fa91b4174b5574e9a2979baa2/index.html" },
-      { title: "战舰逻辑挑战-行列推理", image: "assets/ai-courseware-recommendations/recommendation-07.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/battleship-logic/index.html" },
-      { title: "Make-a-Word果冻拼词-单词拼写", image: "assets/ai-courseware-recommendations/recommendation-08.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/make-a-word-jelly/index.html" },
-      { title: "磁力片正方体-立体拼搭", image: "assets/ai-courseware-recommendations/recommendation-09.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/33f1f1f658da4c519a19c4299eb3fade/index.html" },
-      { title: "转一转找答案-时钟认读", image: "assets/ai-courseware-recommendations/recommendation-10.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/clock-reading.html" }
+      { title: "堵车华容道-车辆逃脱", image: "assets/ai-courseware-recommendations/recommendation-01.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/f57d9d4ceeae49c785b2f4ba8797f8ca/index.html", id: "f57d9d4ceeae49c785b2f4ba8797f8ca", scope: "集团资源 / 双语故事表演 / S3", tags: ["华容道", "空间规划", "路径腾挪", "车辆移动", "步数挑战", "关卡闯关", "策略推理"], knowledge: ["华容道", "空间规划", "路径腾挪"], uploader: "陈佳玲 2026-07-30 18:20:09", updated: "陈佳玲 2026-07-30 18:20:09", size: "2.10K" },
+      { title: "四宫格数独-数字填格闯关", image: "assets/ai-courseware-recommendations/recommendation-02.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/72dd870d6072461581081877c26ab014/index.html", id: "72dd870d6072461581081877c26ab014", scope: "集团资源 / 脑力与思维 / S3", tags: ["四宫格数独", "数字填格", "逻辑推理", "闯关练习"], knowledge: ["数独", "行列推理", "数字规律"], uploader: "陈佳玲 2026-07-29 16:12:34", updated: "陈佳玲 2026-07-31 10:08:21", size: "1.86K" },
+      { title: "颜色序列推理", image: "assets/ai-courseware-recommendations/recommendation-03.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/ff2095eb1dc04b7fa71bc624d6bfceef/index.html", id: "ff2095eb1dc04b7fa71bc624d6bfceef", scope: "集团资源 / 脑力与思维 / S2", tags: ["颜色序列", "规律观察", "选择判断"], knowledge: ["序列规律", "颜色分类"], uploader: "陈佳玲 2026-07-28 14:26:10", updated: "陈佳玲 2026-07-30 11:20:45", size: "1.72K" },
+      { title: "分数披萨店-分数配餐", image: "assets/ai-courseware-recommendations/recommendation-04.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/fraction-pizza.html", id: "cw-fraction-pizza-202607", scope: "集团资源 / 数学 / S3", tags: ["分数", "披萨配餐", "生活情境", "即时反馈"], knowledge: ["分数认识", "单位1", "分数比较"], uploader: "陈佳玲 2026-07-27 15:18:02", updated: "陈佳玲 2026-07-29 09:42:16", size: "2.34K" },
+      { title: "六宫珍珠连线-黑白珍珠回路", image: "assets/ai-courseware-recommendations/recommendation-05.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/12fa58e91e3b45618e49d0636e04d717/index.html", id: "12fa58e91e3b45618e49d0636e04d717", scope: "集团资源 / 脑力与思维 / S3", tags: ["珍珠连线", "路径规划", "回路推理"], knowledge: ["封闭回路", "空间推理"], uploader: "陈佳玲 2026-07-26 13:06:48", updated: "陈佳玲 2026-07-28 17:14:03", size: "2.06K" },
+      { title: "星际解码-数织谜题", image: "assets/ai-courseware-recommendations/recommendation-06.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/eda9d71fa91b4174b5574e9a2979baa2/index.html", id: "eda9d71fa91b4174b5574e9a2979baa2", scope: "集团资源 / 脑力与思维 / S4", tags: ["数织谜题", "行列解码", "逻辑闯关"], knowledge: ["数织", "行列约束", "逻辑排除"], uploader: "陈佳玲 2026-07-25 11:36:29", updated: "陈佳玲 2026-07-27 18:05:12", size: "2.48K" },
+      { title: "战舰逻辑挑战-行列推理", image: "assets/ai-courseware-recommendations/recommendation-07.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/battleship-logic/index.html", id: "cw-battleship-logic-202607", scope: "集团资源 / 脑力与思维 / S4", tags: ["战舰", "行列推理", "位置判断", "策略挑战"], knowledge: ["行列关系", "逻辑排除", "空间定位"], uploader: "陈佳玲 2026-07-24 16:10:33", updated: "陈佳玲 2026-07-27 12:22:51", size: "2.63K" },
+      { title: "Make-a-Word果冻拼词-单词拼写", image: "assets/ai-courseware-recommendations/recommendation-08.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/make-a-word-jelly/index.html", id: "cw-make-a-word-jelly-202607", scope: "集团资源 / 英语 / S2", tags: ["单词拼写", "字母组合", "果冻互动"], knowledge: ["自然拼读", "单词构成", "字母顺序"], uploader: "陈佳玲 2026-07-23 12:30:08", updated: "陈佳玲 2026-07-26 15:44:39", size: "2.22K" },
+      { title: "磁力片正方体-立体拼搭", image: "assets/ai-courseware-recommendations/recommendation-09.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/33f1f1f658da4c519a19c4299eb3fade/index.html", id: "33f1f1f658da4c519a19c4299eb3fade", scope: "集团资源 / 数学 / S3", tags: ["磁力片", "正方体", "立体拼搭", "空间想象"], knowledge: ["正方体", "展开图", "立体图形"], uploader: "陈佳玲 2026-07-22 10:25:16", updated: "陈佳玲 2026-07-25 14:03:27", size: "1.98K" },
+      { title: "转一转找答案-时钟认读", image: "assets/ai-courseware-recommendations/recommendation-10.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/clock-reading.html", id: "cw-clock-reading-202607", scope: "集团资源 / 数学 / S2", tags: ["时钟认读", "转盘互动", "时间判断"], knowledge: ["整时", "半时", "钟面认读"], uploader: "陈佳玲 2026-07-21 15:30:42", updated: "陈佳玲 2026-07-24 09:18:05", size: "1.67K" }
     ];
 
     const shortcutCatalog = {
@@ -763,6 +802,13 @@
       if (!item) return;
       currentRecommendationIndex = index;
       document.getElementById("coursewarePreviewTitle").textContent = item.title;
+      document.getElementById("coursewareMaterialId").textContent = item.id;
+      document.getElementById("coursewareScope").textContent = item.scope;
+      document.getElementById("coursewareTags").innerHTML = item.tags.map(tag => `<span class="preview-tag">${tag}</span>`).join("");
+      document.getElementById("coursewareKnowledge").innerHTML = item.knowledge.map(tag => `<span class="preview-tag knowledge">${tag}</span>`).join("");
+      document.getElementById("coursewareUploader").textContent = item.uploader;
+      document.getElementById("coursewareUpdated").textContent = item.updated;
+      document.getElementById("coursewareSize").textContent = item.size;
       document.getElementById("coursewarePreviewLoading").hidden = false;
       const frame = document.getElementById("coursewarePreviewFrame");
       frame.title = `${item.title}试玩`;
@@ -1007,6 +1053,11 @@
     document.getElementById("cancelCoursewarePreview").addEventListener("click", closeCoursewarePreview);
     document.getElementById("coursewarePreview").addEventListener("click", event => { if (event.target.id === "coursewarePreview") closeCoursewarePreview(); });
     document.getElementById("coursewarePreviewFrame").addEventListener("load", () => { document.getElementById("coursewarePreviewLoading").hidden = true; });
+    document.getElementById("copyCoursewareId").addEventListener("click", async () => {
+      const materialId = document.getElementById("coursewareMaterialId").textContent;
+      try { await navigator.clipboard.writeText(materialId); } catch (error) { /* Demo environments may block clipboard access. */ }
+      toast("素材ID已复制");
+    });
     document.getElementById("previewSameStyle").addEventListener("click", () => useRecommendationStyle(currentRecommendationIndex));
     document.getElementById("aiAssistant").addEventListener("click", () => openAiDrawer("default"));
     document.getElementById("closeAiDrawer").addEventListener("click", closeAiDrawer);
