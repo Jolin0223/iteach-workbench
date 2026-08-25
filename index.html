@@ -786,7 +786,7 @@
       document.getElementById("mainContent").classList.add("business-page");
       document.getElementById("pageHeading").hidden = true;
       const frame = document.getElementById("businessFrame");
-      frame.src = `business-prototype/index.html?embed=1&tab=${tab}#${encodeURIComponent(page)}`;
+      frame.src = `business-prototype/index.html?embed=1&page=${encodeURIComponent(page)}&tab=${tab}#${encodeURIComponent(page)}`;
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
