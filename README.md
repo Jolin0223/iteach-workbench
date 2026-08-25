@@ -5,4 +5,4 @@ iTeach 小学工作台首页交互 Demo，包含角色化快捷入口、班级�
 ## 在线地址
 
 - 自定义域名：https://iteach.chenjialing.com
-- Cloudflare Pages：https://iteach-workbench.pages.dev
+- Cloudflare Pages：https://iteach-primary-workbench.pages.dev
