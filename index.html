@@ -72,7 +72,9 @@
     .main { min-width: 0; padding: 14px 24px 36px; }
     .main.resource-page { position: relative; padding-top: 12px; }
     .main.resource-page .topbar { position: absolute; top: 12px; right: 24px; z-index: 4; height: 38px; margin: 0; }
-    .main.resource-page .resource-title-row { padding-top: 12px; }
+    .main.resource-page .resource-title-row { padding-top: 4px; }
+    .main.business-page { position: relative; padding-top: 12px; }
+    .main.business-page .topbar { position: absolute; top: 12px; right: 24px; z-index: 4; height: 38px; margin: 0; }
     .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; height: 38px; margin-bottom: 14px; }
     .page-heading { display: flex; align-items: center; gap: 12px; }
     .page-heading h1 { margin: 0; font-size: 22px; letter-spacing: 0; }
@@ -158,6 +160,9 @@
     .recommendation-title-wrap { display: flex; align-items: center; gap: 9px; }
     .recommendation-count { padding: 3px 7px; color: #2770e7; background: #edf4ff; border-radius: 5px; font-size: 11px; font-weight: 800; }
     .recommendation-controls { display: flex; align-items: center; gap: 6px; }
+    .recommendation-create { height: 30px; display: inline-flex; align-items: center; gap: 6px; margin-right: 6px; padding: 0 11px; color: #fff; background: var(--blue); border-radius: 6px; box-shadow: 0 4px 10px rgba(36,107,254,.16); font-size: 11px; font-weight: 800; }
+    .recommendation-create:hover { background: #1559de; box-shadow: 0 6px 14px rgba(36,107,254,.22); }
+    .recommendation-create svg { width: 14px; height: 14px; }
     .carousel-control { width: 28px; height: 28px; display: grid; place-items: center; color: #52657d; background: #f4f7fb; border: 1px solid #dfe7f1; border-radius: 6px; }
     .carousel-control:hover:not(:disabled) { color: var(--blue); background: var(--blue-soft); border-color: #c6d9fc; }
     .carousel-control:disabled { color: #b4bfcd; cursor: not-allowed; opacity: .65; }
@@ -242,30 +247,31 @@
     .recent-action:disabled { color: #aab5c4; cursor: not-allowed; text-decoration: none; }
 
     .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .info-card { min-height: 146px; height: 146px; display: flex; flex-direction: column; align-items: flex-start; position: relative; overflow: hidden; padding: 20px 24px; }
+    .info-card { min-height: 102px; height: 102px; display: flex; flex-direction: column; align-items: flex-start; position: relative; overflow: hidden; padding: 13px 20px; }
     .info-card.blue { background: linear-gradient(110deg, #f1f7ff, #fff); }
     .info-card.orange { background: linear-gradient(110deg, #fff8f0, #fff); }
-    .info-card h3 { margin: 0 0 8px; font-size: 18px; }
+    .info-card h3 { margin: 0 0 4px; font-size: 16px; }
     .info-card.blue h3 { color: var(--blue); }
     .info-card.orange h3 { color: #ec7b23; }
-    .info-card p { margin: 0 0 14px; color: #6b7d93; font-size: 13px; }
-    .info-card .info-cta { height: 31px; display: inline-flex; align-items: center; gap: 4px; margin-top: auto; padding: 0 12px; color: #fff; border-radius: 7px; font-size: 12px; font-weight: 800; }
+    .info-card p { margin: 0 0 7px; color: #6b7d93; font-size: 11px; }
+    .info-card .info-cta { height: 27px; display: inline-flex; align-items: center; gap: 4px; margin-top: auto; padding: 0 10px; color: #fff; border-radius: 6px; font-size: 11px; font-weight: 800; }
     .info-card.blue .info-cta { background: var(--blue); }
     .info-card.orange .info-cta { background: #f48b36; }
     .info-art { position: absolute; right: 28px; bottom: 10px; width: 112px; height: 76px; opacity: .87; }
-    .clipboard { position: absolute; right: 25px; bottom: 10px; width: 45px; height: 60px; border: 3px solid #8ab3ff; border-radius: 7px; background: #fff; transform: rotate(8deg); box-shadow: 7px 7px 0 #d9e8ff; }
-    .clipboard::before { content: ""; position: absolute; left: 10px; top: 15px; width: 24px; height: 4px; background: #8ab3ff; box-shadow: 0 11px 0 #c5d9ff, 0 22px 0 #c5d9ff; }
-    .megaphone { position: absolute; right: 18px; bottom: 24px; width: 52px; height: 29px; border-radius: 8px 18px 18px 8px; background: #ff9a42; transform: rotate(-12deg); box-shadow: 10px 4px 0 #ffd8b0; }
+    .clipboard { position: absolute; right: 25px; bottom: 8px; width: 34px; height: 46px; border: 3px solid #8ab3ff; border-radius: 7px; background: #fff; transform: rotate(8deg); box-shadow: 6px 6px 0 #d9e8ff; }
+    .clipboard::before { content: ""; position: absolute; left: 7px; top: 11px; width: 18px; height: 3px; background: #8ab3ff; box-shadow: 0 8px 0 #c5d9ff, 0 16px 0 #c5d9ff; }
+    .megaphone { position: absolute; right: 18px; bottom: 20px; width: 43px; height: 24px; border-radius: 7px 16px 16px 7px; background: #ff9a42; transform: rotate(-12deg); box-shadow: 8px 3px 0 #ffd8b0; }
     .megaphone::before { content: ""; position: absolute; left: -16px; top: 5px; width: 20px; height: 19px; border-radius: 5px 0 0 5px; background: #ef7823; }
 
-    .resource-view { gap: 14px; }
+    .resource-view { gap: 9px; }
     .resource-page-head { padding: 2px 8px 0; background: transparent; }
-    .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 13px; color: #8491a6; font-size: 12px; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; color: #8491a6; font-size: 12px; }
     .resource-title-row { display: flex; align-items: center; gap: 16px; }
     .resource-title-row h2 { margin: 0; color: #172840; font-size: 25px; }
     .resource-create { height: 36px; display: inline-flex; align-items: center; gap: 7px; margin-left: auto; padding: 0 14px; color: #fff; background: var(--blue); border-radius: 7px; font-size: 13px; font-weight: 800; box-shadow: 0 6px 14px rgba(36,107,254,.2); }
     .resource-create svg { width: 16px; height: 16px; }
-    .scope-tabs { display: flex; align-items: center; gap: 38px; margin-top: 18px; border-bottom: 1px solid #dfe7f1; }
+    .scope-tabs { display: flex; align-items: center; gap: 38px; margin-top: 8px; border-bottom: 1px solid #dfe7f1; }
+    .scope-tabs .resource-create { transform: translateY(-5px); }
     .scope-tab { height: 42px; position: relative; padding: 0 8px; color: #3f4f67; background: transparent; font-size: 14px; font-weight: 700; }
     .scope-tab.active { color: var(--blue); }
     .scope-tab.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--blue); border-radius: 3px 3px 0 0; }
@@ -450,8 +456,8 @@
     .toast { position: fixed; left: 50%; bottom: 24px; z-index: 30; transform: translate(-50%, 20px); padding: 11px 16px; color: #fff; background: #1b2c46; border-radius: 8px; box-shadow: 0 10px 30px rgba(26,43,70,.2); opacity: 0; pointer-events: none; transition: .2s ease; font-size: 13px; }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-    .business-view { height: calc(100vh - 66px); min-height: 680px; overflow: hidden; background: #f5f6f8; border: 1px solid #e5eaf1; border-radius: 8px; }
-    .business-frame { width: 100%; height: 100%; display: block; border: 0; background: #f5f6f8; }
+    .business-view { height: calc(100vh - 24px); min-height: 680px; overflow: hidden; background: #fff; border: 0; border-radius: 0; }
+    .business-frame { width: 100%; height: 100%; display: block; border: 0; background: #fff; }
 
     @media (max-width: 1500px) {
       .main { padding-left: 18px; padding-right: 18px; }
@@ -534,7 +540,7 @@
             <button data-role="multi">多角色</button>
           </div>
           <button class="ai-top" id="aiAssistant"><span class="ai-top-mark"><i data-lucide="sparkles"></i></span><span class="ai-top-label">AI助手</span></button>
-          <div class="user"><span class="avatar">张</span><span>张老师</span><i data-lucide="chevron-down"></i></div>
+          <div class="user"><span class="avatar">佳</span><span>佳玲老师</span><i data-lucide="chevron-down"></i></div>
         </div>
       </header>
 
@@ -542,8 +548,8 @@
         <section class="panel hero">
           <div class="hero-welcome">
             <span class="hero-kicker">2026年8月24日 · 星期一</span>
-            <h2>上午好，张老师！</h2>
-            <p>从课表、班级和最近内容继续今天的工作</p>
+            <h2>上午好，佳玲老师！</h2>
+            <p>今天，也给课堂加点新灵感吧</p>
             <div class="hero-visual" aria-hidden="true"><span class="screen"></span><span class="book"></span><span class="plant"></span></div>
           </div>
           <div class="resource-summary">
@@ -561,7 +567,7 @@
         <section class="panel ai-courseware-recommendations" aria-labelledby="recommendationTitle">
           <div class="panel-head">
             <div class="recommendation-title-wrap"><h2 class="panel-title" id="recommendationTitle">AI课件精选推荐</h2><span class="recommendation-count">10个</span></div>
-            <div class="recommendation-controls"><button class="carousel-control" id="recommendationPrev" aria-label="查看上一组AI课件"><i data-lucide="chevron-left"></i></button><button class="carousel-control" id="recommendationNext" aria-label="查看下一组AI课件"><i data-lucide="chevron-right"></i></button></div>
+            <div class="recommendation-controls"><button class="recommendation-create" data-toast="打开AI互动课件创建页"><i data-lucide="plus"></i>新建AI互动课件</button><button class="carousel-control" id="recommendationPrev" aria-label="查看上一组AI课件"><i data-lucide="chevron-left"></i></button><button class="carousel-control" id="recommendationNext" aria-label="查看下一组AI课件"><i data-lucide="chevron-right"></i></button></div>
           </div>
           <div class="recommendation-track" id="recommendationTrack" aria-label="AI课件推荐列表"></div>
         </section>
@@ -589,7 +595,7 @@
         </section>
 
         <section class="panel recent">
-          <div class="panel-head"><h2 class="panel-title">最近使用</h2><div style="display:flex;align-items:center;gap:12px"><div class="resource-tabs"><button class="resource-tab active" data-toast="显示全部内容">全部</button><button class="resource-tab" data-toast="筛选课件">课件</button><button class="resource-tab" data-toast="筛选练习">练习</button><button class="resource-tab" data-toast="筛选试卷">试卷</button><button class="resource-tab" data-toast="筛选测评">测评</button></div><button class="panel-link" data-toast="打开全部最近记录">全部记录<i data-lucide="arrow-up-right"></i></button></div></div>
+          <div class="panel-head"><h2 class="panel-title">最近使用</h2><div class="resource-tabs"><button class="resource-tab active" data-toast="显示全部内容">全部</button><button class="resource-tab" data-toast="筛选课件">课件</button><button class="resource-tab" data-toast="筛选练习">练习</button><button class="resource-tab" data-toast="筛选试卷">试卷</button><button class="resource-tab" data-toast="筛选测评">测评</button></div></div>
           <div class="recent-table"><div class="recent-head"><span>内容名称</span><span>类型</span><span>最近打开时间</span><span>操作</span></div><div class="recent-row"><div class="recent-name"><span class="file-icon course">P</span><span class="ellipsis">《秋天的雨》教学课件</span></div><span class="type-chip">课件</span><span class="muted">今天 09:32</span><div class="recent-actions"><button class="recent-action" data-toast="查看《秋天的雨》教学课件">查看</button><button class="recent-action" data-toast="继续编辑《秋天的雨》教学课件">继续编辑</button></div></div><div class="recent-row"><div class="recent-name"><span class="file-icon practice">✓</span><span class="ellipsis">《秋天的雨》课堂练习</span></div><span class="type-chip">练习</span><span class="muted">昨天 16:15</span><div class="recent-actions"><button class="recent-action" data-toast="查看《秋天的雨》课堂练习">查看</button><button class="recent-action" data-toast="继续编辑《秋天的雨》课堂练习">继续编辑</button></div></div><div class="recent-row"><div class="recent-name"><span class="file-icon paper">卷</span><span class="ellipsis">《单元综合测试卷》</span></div><span class="type-chip">试卷</span><span class="muted">昨天 10:20</span><div class="recent-actions"><button class="recent-action" data-toast="查看《单元综合测试卷》">查看</button><button class="recent-action" disabled title="暂无编辑权限">继续编辑</button></div></div><div class="recent-row"><div class="recent-name"><span class="file-icon test">测</span><span class="ellipsis">三年级语文课文阶段测评</span></div><span class="type-chip">测评</span><span class="muted">5-19 20:45</span><div class="recent-actions"><button class="recent-action" data-toast="查看三年级语文课文阶段测评">查看</button><button class="recent-action" disabled title="暂无编辑权限">继续编辑</button></div></div></div>
         </section>
 
@@ -666,7 +672,7 @@
       { title: "堵车华容道-车辆逃脱", image: "assets/ai-courseware-recommendations/recommendation-01.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/f57d9d4ceeae49c785b2f4ba8797f8ca/index.html", id: "f57d9d4ceeae49c785b2f4ba8797f8ca", scope: "集团资源 / 双语故事表演 / S3", tags: ["华容道", "空间规划", "路径腾挪", "车辆移动", "步数挑战", "关卡闯关", "策略推理"], knowledge: ["华容道", "空间规划", "路径腾挪"], uploader: "陈佳玲 2026-07-30 18:20:09", updated: "陈佳玲 2026-07-30 18:20:09", size: "2.10K" },
       { title: "四宫格数独-数字填格闯关", image: "assets/ai-courseware-recommendations/recommendation-02.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/72dd870d6072461581081877c26ab014/index.html", id: "72dd870d6072461581081877c26ab014", scope: "集团资源 / 脑力与思维 / S3", tags: ["四宫格数独", "数字填格", "逻辑推理", "闯关练习"], knowledge: ["数独", "行列推理", "数字规律"], uploader: "陈佳玲 2026-07-29 16:12:34", updated: "陈佳玲 2026-07-31 10:08:21", size: "1.86K" },
       { title: "颜色序列推理", image: "assets/ai-courseware-recommendations/recommendation-03.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/ff2095eb1dc04b7fa71bc624d6bfceef/index.html", id: "ff2095eb1dc04b7fa71bc624d6bfceef", scope: "集团资源 / 脑力与思维 / S2", tags: ["颜色序列", "规律观察", "选择判断"], knowledge: ["序列规律", "颜色分类"], uploader: "陈佳玲 2026-07-28 14:26:10", updated: "陈佳玲 2026-07-30 11:20:45", size: "1.72K" },
-      { title: "分数披萨店-分数配餐", image: "assets/ai-courseware-recommendations/recommendation-04.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/fraction-pizza.html", id: "cw-fraction-pizza-202607", scope: "集团资源 / 数学 / S3", tags: ["分数", "披萨配餐", "生活情境", "即时反馈"], knowledge: ["分数认识", "单位1", "分数比较"], uploader: "陈佳玲 2026-07-27 15:18:02", updated: "陈佳玲 2026-07-29 09:42:16", size: "2.34K" },
+      { title: "分数披萨店-分数配餐", image: "assets/ai-courseware-recommendations/recommendation-04.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/fraction-pizza", id: "cw-fraction-pizza-202607", scope: "集团资源 / 数学 / S3", tags: ["分数", "披萨配餐", "生活情境", "即时反馈"], knowledge: ["分数认识", "单位1", "分数比较"], uploader: "陈佳玲 2026-07-27 15:18:02", updated: "陈佳玲 2026-07-29 09:42:16", size: "2.34K" },
       { title: "六宫珍珠连线-黑白珍珠回路", image: "assets/ai-courseware-recommendations/recommendation-05.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/12fa58e91e3b45618e49d0636e04d717/index.html", id: "12fa58e91e3b45618e49d0636e04d717", scope: "集团资源 / 脑力与思维 / S3", tags: ["珍珠连线", "路径规划", "回路推理"], knowledge: ["封闭回路", "空间推理"], uploader: "陈佳玲 2026-07-26 13:06:48", updated: "陈佳玲 2026-07-28 17:14:03", size: "2.06K" },
       { title: "星际解码-数织谜题", image: "assets/ai-courseware-recommendations/recommendation-06.png", preview: "https://aigc-cdn.xdf.cn/material/openapi/xa-ig-kpm/eda9d71fa91b4174b5574e9a2979baa2/index.html", id: "eda9d71fa91b4174b5574e9a2979baa2", scope: "集团资源 / 脑力与思维 / S4", tags: ["数织谜题", "行列解码", "逻辑闯关"], knowledge: ["数织", "行列约束", "逻辑排除"], uploader: "陈佳玲 2026-07-25 11:36:29", updated: "陈佳玲 2026-07-27 18:05:12", size: "2.48K" },
       { title: "战舰逻辑挑战-行列推理", image: "assets/ai-courseware-recommendations/recommendation-07.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/battleship-logic/index.html", id: "cw-battleship-logic-202607", scope: "集团资源 / 脑力与思维 / S4", tags: ["战舰", "行列推理", "位置判断", "策略挑战"], knowledge: ["行列关系", "逻辑排除", "空间定位"], uploader: "陈佳玲 2026-07-24 16:10:33", updated: "陈佳玲 2026-07-27 12:22:51", size: "2.63K" },
