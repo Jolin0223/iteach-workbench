@@ -195,11 +195,11 @@
     .calendar-grid button.has-course::after { content: ""; position: absolute; bottom: 2px; width: 3px; height: 3px; border-radius: 50%; background: var(--orange); }
     .calendar-grid button.selected { color: #fff; background: var(--blue); box-shadow: 0 4px 10px rgba(36,107,254,.25); }
     .calendar-grid button.selected::after { background: #fff; }
-    .lesson-table { min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); border: 1px solid #e7edf5; border-radius: 9px; overflow: hidden; }
+    .lesson-table { min-width: 0; align-self: start; border: 1px solid #e7edf5; border-radius: 9px; overflow: hidden; }
     .lesson-head, .lesson-row { display: grid; grid-template-columns: minmax(72px, .6fr) minmax(150px, .9fr) minmax(84px, .55fr) minmax(120px, .75fr) minmax(92px, .65fr) minmax(360px, 2.4fr); gap: 8px; align-items: center; }
     .lesson-head { min-height: 38px; padding: 0 14px; color: #8190a4; background: #f8fafc; font-size: 11px; font-weight: 700; }
     .lesson-row { min-height: 78px; padding: 10px 14px; color: #34445c; border-top: 1px solid #edf1f6; font-size: 12px; }
-    #lessonTableBody { min-height: 0; display: grid; grid-auto-rows: minmax(78px, 1fr); }
+    #lessonTableBody { min-height: 0; }
     .lesson-time { color: #1d3151; font-weight: 800; font-size: 14px; }
     .lesson-main strong { display: block; margin-bottom: 4px; color: #1f304b; font-size: 14px; }
     .lesson-main em { display: block; color: #7b899d; font-size: 10px; font-style: normal; font-weight: 600; line-height: 1.2; white-space: nowrap; }
@@ -450,6 +450,9 @@
     .toast { position: fixed; left: 50%; bottom: 24px; z-index: 30; transform: translate(-50%, 20px); padding: 11px 16px; color: #fff; background: #1b2c46; border-radius: 8px; box-shadow: 0 10px 30px rgba(26,43,70,.2); opacity: 0; pointer-events: none; transition: .2s ease; font-size: 13px; }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
+    .business-view { height: calc(100vh - 66px); min-height: 680px; overflow: hidden; background: #f5f6f8; border: 1px solid #e5eaf1; border-radius: 8px; }
+    .business-frame { width: 100%; height: 100%; display: block; border: 0; background: #f5f6f8; }
+
     @media (max-width: 1500px) {
       .main { padding-left: 18px; padding-right: 18px; }
       .lesson-head, .lesson-row { grid-template-columns: 40px 88px 40px 52px 48px minmax(204px, 1fr); gap: 4px; padding-left: 8px; padding-right: 8px; }
@@ -481,38 +484,38 @@
         </div>
         <div class="nav-group">
           <div class="nav-label">教学内容</div>
-          <button class="nav-item" data-toast="将进入备课中心"><i data-lucide="file-pen-line"></i><span>备课中心</span></button>
-          <button class="nav-item" data-toast="将进入练习中心"><i data-lucide="list-checks"></i><span>练习中心</span></button>
-          <button class="nav-item" data-toast="将进入试卷中心"><i data-lucide="file-text"></i><span>试卷中心</span></button>
-          <button class="nav-item" data-toast="将进入测评中心"><i data-lucide="clipboard-check"></i><span>测评中心</span></button>
+          <button class="nav-item" data-business-page="beike"><i data-lucide="file-pen-line"></i><span>备课中心</span></button>
+          <button class="nav-item" data-business-page="lianxi"><i data-lucide="list-checks"></i><span>练习中心</span></button>
+          <button class="nav-item" data-business-page="shijuan"><i data-lucide="file-text"></i><span>试卷中心</span></button>
+          <button class="nav-item" data-business-page="ceping"><i data-lucide="clipboard-check"></i><span>测评中心</span></button>
           <button class="nav-item" data-view="resources"><i data-lucide="library-big"></i><span>资源中心</span></button>
         </div>
         <div class="nav-group">
           <div class="nav-label">教学服务</div>
-          <button class="nav-item" data-toast="将进入我的课表"><i data-lucide="calendar-days"></i><span>我的课表</span></button>
-          <button class="nav-item" data-toast="将进入我的班级"><i data-lucide="users-round"></i><span>我的班级</span></button>
-          <button class="nav-item" data-toast="将进入我的学员"><i data-lucide="user-round"></i><span>我的学员</span></button>
+          <button class="nav-item" data-business-page="kebiao"><i data-lucide="calendar-days"></i><span>我的课表</span></button>
+          <button class="nav-item" data-business-page="banji"><i data-lucide="users-round"></i><span>我的班级</span></button>
+          <button class="nav-item" data-business-page="xueyuan"><i data-lucide="user-round"></i><span>我的学员</span></button>
           <button class="nav-item" data-toast="将进入作业管理"><i data-lucide="clipboard-list"></i><span>作业管理</span></button>
           <button class="nav-item" data-toast="将进入学情服务"><i data-lucide="chart-no-axes-column"></i><span>学情服务</span></button>
         </div>
         <div class="nav-group">
           <div class="nav-label">师训专区</div>
-          <button class="nav-item" data-toast="将进入功底考"><i data-lucide="graduation-cap"></i><span>功底考</span></button>
+          <button class="nav-item" data-business-page="gongdi"><i data-lucide="graduation-cap"></i><span>功底考</span></button>
           <button class="nav-item" data-toast="将进入教师学堂"><i data-lucide="book-open-check"></i><span>教师学堂</span></button>
         </div>
         <div class="nav-group">
           <div class="nav-label">运营专区</div>
           <button class="nav-item" data-toast="将进入活动管理"><i data-lucide="sparkles"></i><span>活动管理</span></button>
-          <button class="nav-item" data-toast="将进入测评应用"><i data-lucide="grid-2x2"></i><span>测评应用</span></button>
+          <button class="nav-item" data-business-page="ceping"><i data-lucide="grid-2x2"></i><span>测评应用</span></button>
           <button class="nav-item" data-toast="将进入试卷分析"><i data-lucide="file-chart-column"></i><span>试卷分析</span></button>
           <button class="nav-item" data-toast="将进入考情分析"><i data-lucide="chart-spline"></i><span>考情分析</span></button>
         </div>
         <div class="nav-group">
           <div class="nav-label">应用管理</div>
-          <button class="nav-item" data-toast="将进入数据中心"><i data-lucide="database"></i><span>数据中心</span></button>
+          <button class="nav-item" data-business-page="data"><i data-lucide="database"></i><span>数据中心</span></button>
           <button class="nav-item" data-toast="将进入权限管理"><i data-lucide="user-cog"></i><span>权限管理</span></button>
           <button class="nav-item" data-toast="将进入应用中心"><i data-lucide="blocks"></i><span>应用中心</span></button>
-          <button class="nav-item" data-toast="将进入回收站"><i data-lucide="trash-2"></i><span>回收站</span></button>
+          <button class="nav-item" data-business-page="recycle"><i data-lucide="trash-2"></i><span>回收站</span></button>
         </div>
       </nav>
     </aside>
@@ -622,6 +625,10 @@
           </div>
         </section>
       </section>
+
+      <section class="view business-view" id="businessView" aria-label="业务功能页面">
+        <iframe class="business-frame" id="businessFrame" title="iTeach业务功能页面" loading="eager"></iframe>
+      </section>
     </main>
   </div>
 
@@ -710,6 +717,15 @@
       group: { label: "集团教研", showSchedule: false, defaults: ["集团云盘", "集团练习", "能力测评", "集团试卷", "集团资源"], options: groupMenus },
       multi: { label: "多角色", showSchedule: true, defaults: ["校本云盘", "个人云盘", "练习绑定", "班级列表", "学情列表", "集团云盘", "集团练习", "能力测评"], options: [...new Set([...teacherMenus, ...branchMenus, ...groupMenus])] }
     };
+    const shortcutRoutes = {
+      "集团云盘": { page: "beike", tab: 0 }, "校本云盘": { page: "beike", tab: 1 }, "个人云盘": { page: "beike", tab: 2 },
+      "集团练习": { page: "lianxi", tab: 0 }, "校本练习": { page: "lianxi", tab: 1 }, "个人练习": { page: "lianxi", tab: 2 },
+      "集团试卷": { page: "shijuan", tab: 0 }, "校本试卷": { page: "shijuan", tab: 1 }, "个人试卷": { page: "shijuan", tab: 2 },
+      "阶段测试": { page: "ceping", tab: 0 }, "能力测评": { page: "ceping", tab: 1 }, "成绩管理": { page: "ceping", tab: 2 },
+      "课表": { page: "kebiao" }, "班级列表": { page: "banji" }, "学员列表": { page: "xueyuan" },
+      "功底考练习": { page: "gongdi", tab: 0 }, "功底考配置": { page: "gongdi", tab: 1 }, "考试配置": { page: "gongdi", tab: 2 },
+      "已删除内容管理": { page: "recycle", tab: 0 }
+    };
     const roleState = Object.fromEntries(Object.keys(roleData).map(key => [key, [...roleData[key].defaults]]));
     let currentRole = "teacher";
 
@@ -763,11 +779,23 @@
       window.__toastTimer = window.setTimeout(() => el.classList.remove("show"), 2200);
     }
 
+    function setBusinessPage(page, tab = 0, sourceButton = null) {
+      document.querySelectorAll(".view").forEach(el => el.classList.toggle("active", el.id === "businessView"));
+      document.querySelectorAll(".nav-item").forEach(el => el.classList.toggle("active", sourceButton ? el === sourceButton : el.dataset.businessPage === page));
+      document.getElementById("mainContent").classList.remove("resource-page");
+      document.getElementById("mainContent").classList.add("business-page");
+      document.getElementById("pageHeading").hidden = true;
+      const frame = document.getElementById("businessFrame");
+      frame.src = `business-prototype/index.html?embed=1&tab=${tab}#${encodeURIComponent(page)}`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     function setView(view) {
       const viewId = view === "resources" ? "resourceView" : view + "View";
       document.querySelectorAll(".view").forEach(el => el.classList.toggle("active", el.id === viewId));
       document.querySelectorAll(".nav-item").forEach(el => el.classList.toggle("active", el.dataset.view === view));
       document.getElementById("mainContent").classList.toggle("resource-page", view === "resources");
+      document.getElementById("mainContent").classList.remove("business-page");
       if (view === "home") {
         document.getElementById("pageHeading").hidden = false;
         document.getElementById("pageTitle").textContent = "首页";
@@ -877,9 +905,30 @@
     function renderShortcuts() {
       const grid = document.getElementById("shortcutGrid");
       const items = roleState[currentRole];
-      grid.innerHTML = items.length ? items.map(label => `<button class="shortcut" data-toast="将进入：${shortcutMeta(label)}"><span class="shortcut-icon"><i data-lucide="${shortcutCatalog[label]?.icon || "square-arrow-out-up-right"}"></i></span><span class="shortcut-copy"><span class="shortcut-label">${label}</span><span class="shortcut-meta">${shortcutMeta(label)}</span></span></button>`).join("") : `<div class="shortcut-empty">暂未设置常用菜单，请点击右上角编辑常用</div>`;
+      grid.innerHTML = items.length ? items.map(label => `<button class="shortcut" data-shortcut="${label}"><span class="shortcut-icon"><i data-lucide="${shortcutCatalog[label]?.icon || "square-arrow-out-up-right"}"></i></span><span class="shortcut-copy"><span class="shortcut-label">${label}</span><span class="shortcut-meta">${shortcutMeta(label)}</span></span></button>`).join("") : `<div class="shortcut-empty">暂未设置常用菜单，请点击右上角编辑常用</div>`;
       lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
-      bindToastHandlers();
+      grid.querySelectorAll("[data-shortcut]").forEach(button => button.addEventListener("click", () => openShortcut(button.dataset.shortcut)));
+    }
+
+    function openShortcut(label) {
+      const resourceScopes = { "集团资源": "group", "校本资源": "school", "个人资源": "personal" };
+      if (resourceScopes[label]) {
+        setView("resources");
+        const scopeButton = document.querySelector(`[data-resource-scope="${resourceScopes[label]}"]`);
+        if (scopeButton) scopeButton.click();
+        return;
+      }
+      if (label === "练习绑定") {
+        const tab = currentRole === "teacher" || currentRole === "multi" ? 4 : 3;
+        setBusinessPage("lianxi", tab);
+        return;
+      }
+      const route = shortcutRoutes[label];
+      if (route) {
+        setBusinessPage(route.page, route.tab || 0);
+        return;
+      }
+      toast(`将进入：${shortcutMeta(label)}`);
     }
 
     let shortcutDraftOrder = [];
@@ -1014,6 +1063,7 @@
     }
 
     document.querySelectorAll("[data-view]").forEach(el => el.addEventListener("click", () => setView(el.dataset.view)));
+    document.querySelectorAll("[data-business-page]").forEach(button => button.addEventListener("click", () => setBusinessPage(button.dataset.businessPage, 0, button)));
     document.querySelectorAll("[data-role]").forEach(button => button.addEventListener("click", () => {
       currentRole = button.dataset.role;
       document.querySelectorAll("[data-role]").forEach(item => item.classList.toggle("active", item.dataset.role === currentRole));
