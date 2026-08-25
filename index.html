@@ -544,7 +544,6 @@
             <button data-role="group">集团教研</button>
             <button data-role="multi">多角色</button>
           </div>
-          <button class="ai-top" id="aiAssistant"><span class="ai-top-mark"><i data-lucide="sparkles"></i></span><span class="ai-top-label">AI助手</span></button>
           <div class="user"><span class="avatar">佳</span><span>佳玲老师</span><i data-lucide="chevron-down"></i></div>
         </div>
       </header>
@@ -1158,7 +1157,6 @@
       toast("素材ID已复制");
     });
     document.getElementById("previewSameStyle").addEventListener("click", () => useRecommendationStyle(currentRecommendationIndex));
-    document.getElementById("aiAssistant").addEventListener("click", () => openAiDrawer("default"));
     document.getElementById("closeAiDrawer").addEventListener("click", closeAiDrawer);
     document.getElementById("aiDrawer").addEventListener("click", event => { if (event.target.id === "aiDrawer") closeAiDrawer(); });
     document.getElementById("runAiAgent").addEventListener("click", runAiAgent);
