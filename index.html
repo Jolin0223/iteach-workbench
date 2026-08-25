@@ -389,18 +389,17 @@
     .selection-head { margin-bottom: 9px; }
     .selection-head h3, .available-head h3 { margin: 0; color: #22344e; font-size: 14px; }
     .selection-head span, .available-head span { color: var(--muted); font-size: 11px; }
-    .selected-list { display: grid; gap: 6px; margin-bottom: 18px; padding: 10px; background: #f6f9fd; border: 1px solid #e0e8f2; border-radius: 8px; }
-    .selected-row { min-height: 44px; display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; align-items: center; gap: 9px; padding: 5px 7px; background: #fff; border: 1px solid #e4ebf4; border-radius: 6px; }
-    .selected-index { color: #246bfe; font-size: 12px; font-weight: 850; text-align: center; }
+    .selected-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-bottom: 18px; padding: 9px; background: #f6f9fd; border: 1px solid #e0e8f2; border-radius: 8px; }
+    .selected-row { min-width: 0; min-height: 46px; display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: center; gap: 8px; padding: 6px 9px; background: #fff; border: 1px solid #e1e8f2; border-radius: 6px; cursor: grab; touch-action: none; user-select: none; transition: border-color .14s ease, background .14s ease, box-shadow .14s ease, opacity .14s ease, transform .14s ease; }
+    .selected-row:hover { border-color: #b8d1fb; box-shadow: 0 3px 9px rgba(36,107,254,.07); }
+    .selected-row.dragging { opacity: .42; cursor: grabbing; }
+    .selected-row.drag-over { background: #edf4ff; border-color: #75a5fa; box-shadow: inset 0 0 0 1px rgba(36,107,254,.12); }
+    .drag-handle { width: 24px; height: 30px; display: grid; place-items: center; color: #8090a6; border-radius: 5px; }
+    .drag-handle svg { width: 15px; height: 15px; }
     .selected-copy { min-width: 0; }
     .selected-copy strong { display: block; margin-bottom: 2px; color: #2b3e58; font-size: 12px; }
     .selected-copy small { display: block; overflow: hidden; color: #8190a4; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-    .sort-actions { display: flex; gap: 4px; }
-    .sort-button-icon { width: 28px; height: 28px; display: grid; place-items: center; color: #5f7188; background: #f1f5fa; border-radius: 5px; }
-    .sort-button-icon:hover:not(:disabled) { color: #246bfe; background: #eaf2ff; }
-    .sort-button-icon:disabled { color: #bdc6d2; cursor: not-allowed; }
-    .sort-button-icon svg { width: 14px; height: 14px; }
-    .selected-empty { padding: 12px; color: #8593a6; text-align: center; font-size: 12px; }
+    .selected-empty { grid-column: 1 / -1; padding: 12px; color: #8593a6; text-align: center; font-size: 12px; }
     .available-head { margin-bottom: 9px; }
     .menu-groups { display: grid; gap: 12px; }
     .menu-group { padding: 11px; background: #fbfcfe; border: 1px solid #e5ebf3; border-radius: 8px; }
@@ -456,8 +455,14 @@
     .toast { position: fixed; left: 50%; bottom: 24px; z-index: 30; transform: translate(-50%, 20px); padding: 11px 16px; color: #fff; background: #1b2c46; border-radius: 8px; box-shadow: 0 10px 30px rgba(26,43,70,.2); opacity: 0; pointer-events: none; transition: .2s ease; font-size: 13px; }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-    .business-view { height: calc(100vh - 24px); min-height: 680px; overflow: hidden; background: #fff; border: 0; border-radius: 0; }
-    .business-frame { width: 100%; height: 100%; display: block; border: 0; background: #fff; }
+    .business-view { position: relative; height: calc(100vh - 24px); min-height: 680px; overflow: hidden; background: var(--bg); border: 0; border-radius: 0; }
+    .business-frame { width: 100%; height: 100%; display: block; border: 0; background: var(--bg); opacity: 0; visibility: hidden; transition: opacity .18s ease; }
+    .business-view.ready .business-frame { opacity: 1; visibility: visible; }
+    .business-loading { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; color: #75849a; background: var(--bg); font-size: 12px; transition: opacity .16s ease; }
+    .business-loading::before { content: ""; width: 22px; height: 22px; margin-right: 9px; border: 2px solid #d7e2f0; border-top-color: var(--blue); border-radius: 50%; animation: business-spin .8s linear infinite; }
+    .business-loading > span { display: inline-flex; align-items: center; }
+    .business-view.ready .business-loading { opacity: 0; pointer-events: none; }
+    @keyframes business-spin { to { transform: rotate(360deg); } }
 
     @media (max-width: 1500px) {
       .main { padding-left: 18px; padding-right: 18px; }
@@ -567,7 +572,7 @@
         <section class="panel ai-courseware-recommendations" aria-labelledby="recommendationTitle">
           <div class="panel-head">
             <div class="recommendation-title-wrap"><h2 class="panel-title" id="recommendationTitle">AI课件精选推荐</h2><span class="recommendation-count">10个</span></div>
-            <div class="recommendation-controls"><button class="recommendation-create" data-toast="打开AI互动课件创建页"><i data-lucide="plus"></i>新建AI互动课件</button><button class="carousel-control" id="recommendationPrev" aria-label="查看上一组AI课件"><i data-lucide="chevron-left"></i></button><button class="carousel-control" id="recommendationNext" aria-label="查看下一组AI课件"><i data-lucide="chevron-right"></i></button></div>
+            <div class="recommendation-controls"><button class="recommendation-create" data-external-url="https://box.xdf.cn/kpm/"><i data-lucide="plus"></i>新建AI互动课件</button><button class="carousel-control" id="recommendationPrev" aria-label="查看上一组AI课件"><i data-lucide="chevron-left"></i></button><button class="carousel-control" id="recommendationNext" aria-label="查看下一组AI课件"><i data-lucide="chevron-right"></i></button></div>
           </div>
           <div class="recommendation-track" id="recommendationTrack" aria-label="AI课件推荐列表"></div>
         </section>
@@ -606,7 +611,7 @@
         <section class="resource-page-head">
           <div class="breadcrumb"><span>教学内容</span><i data-lucide="chevron-right"></i><span>资源中心</span></div>
           <div class="resource-title-row"><h2>资源中心</h2></div>
-          <div class="scope-tabs"><button class="scope-tab active" data-resource-scope="group">集团资源</button><button class="scope-tab" data-resource-scope="school">校本资源</button><button class="scope-tab" data-resource-scope="personal">个人资源</button><button class="resource-create" data-toast="打开AI互动课件创建页"><i data-lucide="plus"></i>添加AI互动课件</button></div>
+          <div class="scope-tabs"><button class="scope-tab active" data-resource-scope="group">集团资源</button><button class="scope-tab" data-resource-scope="school">校本资源</button><button class="scope-tab" data-resource-scope="personal">个人资源</button><button class="resource-create" data-external-url="https://box.xdf.cn/kpm/"><i data-lucide="plus"></i>添加AI互动课件</button></div>
         </section>
         <section class="resource-workspace">
           <div class="resource-workspace-head">
@@ -633,6 +638,7 @@
       </section>
 
       <section class="view business-view" id="businessView" aria-label="业务功能页面">
+        <div class="business-loading" id="businessLoading" role="status"><span>正在加载业务页面</span></div>
         <iframe class="business-frame" id="businessFrame" title="iTeach业务功能页面" loading="eager"></iframe>
       </section>
     </main>
@@ -681,56 +687,43 @@
       { title: "转一转找答案-时钟认读", image: "assets/ai-courseware-recommendations/recommendation-10.png", preview: "https://coursewareagent.chenjialing.cn/demo-history/clock-reading.html", id: "cw-clock-reading-202607", scope: "集团资源 / 数学 / S2", tags: ["时钟认读", "转盘互动", "时间判断"], knowledge: ["整时", "半时", "钟面认读"], uploader: "陈佳玲 2026-07-21 15:30:42", updated: "陈佳玲 2026-07-24 09:18:05", size: "1.67K" }
     ];
 
-    const shortcutCatalog = {
-      "集团云盘": { path: "备课中心 > 集团云盘", group: "教学内容", icon: "folder-open" },
-      "校本云盘": { path: "备课中心 > 校本云盘", group: "教学内容", icon: "folder-open" },
-      "个人云盘": { path: "备课中心 > 个人云盘", group: "教学内容", icon: "folder-plus" },
-      "集团练习": { path: "练习中心 > 集团练习", group: "教学内容", icon: "list-checks" },
-      "校本练习": { path: "练习中心 > 校本练习", group: "教学内容", icon: "list-checks" },
-      "个人练习": { path: "练习中心 > 个人练习", group: "教学内容", icon: "list-plus" },
-      "练习绑定": { path: "练习中心 > 练习绑定", group: "教学内容", icon: "link-2" },
-      "集团试卷": { path: "试卷中心 > 集团试卷", group: "教学内容", icon: "file-text" },
-      "校本试卷": { path: "试卷中心 > 校本试卷", group: "教学内容", icon: "file-text" },
-      "个人试卷": { path: "试卷中心 > 个人试卷", group: "教学内容", icon: "file-text" },
-      "能力测评": { path: "测评中心 > 能力测评", group: "教学内容", icon: "clipboard-check" },
-      "阶段测试": { path: "测评中心 > 阶段测试", group: "教学内容", icon: "timer-reset" },
-      "成绩管理": { path: "测评中心 > 成绩管理", group: "教学内容", icon: "chart-column" },
-      "集团资源": { path: "资源中心 > 集团资源", group: "教学内容", icon: "library-big" },
-      "校本资源": { path: "资源中心 > 校本资源", group: "教学内容", icon: "library-big" },
-      "个人资源": { path: "资源中心 > 个人资源", group: "教学内容", icon: "library-big" },
-      "课表": { path: "我的课表 > 课表", group: "教学服务", icon: "calendar-days" },
-      "班级列表": { path: "我的班级 > 班级列表", group: "教学服务", icon: "users-round" },
-      "学员列表": { path: "我的学员 > 学员列表", group: "教学服务", icon: "user-round" },
-      "开课中班级": { path: "作业管理 > 开课中班级", group: "教学服务", icon: "clipboard-list" },
-      "未开课班级": { path: "作业管理 > 未开课班级", group: "教学服务", icon: "calendar-clock" },
-      "已结课班级": { path: "作业管理 > 已结课班级", group: "教学服务", icon: "calendar-check-2" },
-      "学情列表": { path: "学情服务 > 学情列表", group: "教学服务", icon: "chart-no-axes-column" },
-      "功底考练习": { path: "功底考 > 功底考练习", group: "师训专区", icon: "graduation-cap" },
-      "功底考配置": { path: "功底考 > 功底考配置", group: "师训专区", icon: "settings-2" },
-      "考试配置": { path: "功底考 > 考试配置", group: "师训专区", icon: "file-cog" },
-      "课程学习": { path: "教师学堂 > 课程学习", group: "师训专区", icon: "book-open-check" },
-      "活动列表": { path: "活动管理 > 活动列表", group: "运营专区", icon: "sparkles" },
-      "授课使用明细": { path: "数据中心 > 授课使用明细", group: "应用管理", icon: "chart-no-axes-combined" },
-      "应用入口与授权应用": { path: "应用中心 > 应用入口与授权应用", group: "应用管理", icon: "blocks" },
-      "已删除内容管理": { path: "回收站 > 已删除内容管理", group: "应用管理", icon: "archive-restore" }
-    };
-    const teacherMenus = ["集团云盘", "校本云盘", "个人云盘", "集团练习", "校本练习", "个人练习", "练习绑定", "集团试卷", "校本试卷", "个人试卷", "能力测评", "阶段测试", "成绩管理", "集团资源", "校本资源", "个人资源", "课表", "班级列表", "学员列表", "开课中班级", "未开课班级", "已结课班级", "学情列表", "功底考练习", "课程学习", "活动列表", "应用入口与授权应用", "已删除内容管理"];
-    const branchMenus = ["集团云盘", "校本云盘", "个人云盘", "集团练习", "校本练习", "个人练习", "练习绑定", "集团试卷", "校本试卷", "个人试卷", "能力测评", "成绩管理", "集团资源", "校本资源", "个人资源", "功底考练习", "课程学习", "活动列表", "应用入口与授权应用", "已删除内容管理"];
-    const groupMenus = ["集团云盘", "校本云盘", "个人云盘", "集团练习", "校本练习", "个人练习", "练习绑定", "集团试卷", "校本试卷", "个人试卷", "能力测评", "成绩管理", "集团资源", "校本资源", "个人资源", "功底考练习", "功底考配置", "考试配置", "课程学习", "活动列表", "授课使用明细", "应用入口与授权应用", "已删除内容管理"];
+    // This inventory mirrors the currently integrated business-page tabs. Items without a real tab are excluded.
+    const shortcutItems = [
+      { id: "beike-group", label: "集团云盘", path: "备课中心 > 集团云盘", group: "教学内容", icon: "folder-open", page: "beike", tab: 0 },
+      { id: "beike-school", label: "校本云盘", path: "备课中心 > 校本云盘", group: "教学内容", icon: "folder-open", page: "beike", tab: 1 },
+      { id: "beike-personal", label: "个人云盘", path: "备课中心 > 个人云盘", group: "教学内容", icon: "folder-plus", page: "beike", tab: 2 },
+      { id: "practice-group", label: "集团练习", path: "练习中心 > 集团练习", group: "教学内容", icon: "list-checks", page: "lianxi", tab: 0 },
+      { id: "practice-school", label: "校本练习", path: "练习中心 > 校本练习", group: "教学内容", icon: "list-checks", page: "lianxi", tab: 1 },
+      { id: "practice-personal", label: "个人练习", path: "练习中心 > 个人练习", group: "教学内容", icon: "list-plus", page: "lianxi", tab: 2 },
+      { id: "practice-product-bind", label: "课程产品绑定", path: "练习中心 > 课程产品绑定", group: "教学内容", icon: "link-2", page: "lianxi", tab: 3, roles: ["branch", "group", "multi"] },
+      { id: "practice-class-bind", label: "班级绑定", path: "练习中心 > 班级绑定", group: "教学内容", icon: "link-2", page: "lianxi", tab: 4, roles: ["teacher", "multi"] },
+      { id: "paper-group", label: "集团试卷", path: "试卷中心 > 集团试卷", group: "教学内容", icon: "file-text", page: "shijuan", tab: 0 },
+      { id: "paper-school", label: "校本试卷", path: "试卷中心 > 校本试卷", group: "教学内容", icon: "file-text", page: "shijuan", tab: 1 },
+      { id: "paper-personal", label: "个人试卷", path: "试卷中心 > 个人试卷", group: "教学内容", icon: "file-text", page: "shijuan", tab: 2 },
+      { id: "assessment-stage", label: "阶段测试", path: "测评中心 > 阶段测试", group: "教学内容", icon: "timer-reset", page: "ceping", tab: 0 },
+      { id: "assessment-ability", label: "能力测评", path: "测评中心 > 能力测评", group: "教学内容", icon: "clipboard-check", page: "ceping", tab: 1 },
+      { id: "assessment-score", label: "成绩管理", path: "测评中心 > 成绩管理", group: "教学内容", icon: "chart-column", page: "ceping", tab: 2 },
+      { id: "resource-group", label: "集团资源", path: "资源中心 > 集团资源", group: "教学内容", icon: "library-big", view: "resources", scope: "group" },
+      { id: "resource-school", label: "校本资源", path: "资源中心 > 校本资源", group: "教学内容", icon: "library-big", view: "resources", scope: "school" },
+      { id: "resource-personal", label: "个人资源", path: "资源中心 > 个人资源", group: "教学内容", icon: "library-big", view: "resources", scope: "personal" },
+      { id: "training-practice", label: "功底考练习", path: "功底考 > 功底考练习", group: "师训专区", icon: "graduation-cap", page: "gongdi", tab: 0 },
+      { id: "training-config", label: "功底考配置", path: "功底考 > 功底考配置", group: "师训专区", icon: "settings-2", page: "gongdi", tab: 1 },
+      { id: "training-exam", label: "功底考考试", path: "功底考 > 功底考考试", group: "师训专区", icon: "file-check-2", page: "gongdi", tab: 2 },
+      { id: "data-dashboard", label: "数据看板", path: "数据中心 > 数据看板", group: "应用管理", icon: "chart-no-axes-combined", page: "data", tab: 0 },
+      { id: "data-attendance", label: "出勤明细", path: "数据中心 > 出勤明细", group: "应用管理", icon: "list-filter", page: "data", tab: 1 },
+      { id: "data-refund", label: "退费明细", path: "数据中心 > 退费明细", group: "应用管理", icon: "receipt-text", page: "data", tab: 2 },
+      { id: "recycle-courseware", label: "课件", path: "回收站 > 课件", group: "应用管理", icon: "archive-restore", page: "recycle", tab: 0 },
+      { id: "recycle-resource", label: "资源", path: "回收站 > 资源", group: "应用管理", icon: "archive-restore", page: "recycle", tab: 1 },
+      { id: "recycle-paper", label: "试卷", path: "回收站 > 试卷", group: "应用管理", icon: "archive-restore", page: "recycle", tab: 2 },
+      { id: "recycle-practice", label: "练习", path: "回收站 > 练习", group: "应用管理", icon: "archive-restore", page: "recycle", tab: 3 }
+    ];
+    const shortcutCatalog = Object.fromEntries(shortcutItems.map(item => [item.id, item]));
+    const menusForRole = role => shortcutItems.filter(item => !item.roles || item.roles.includes(role)).map(item => item.id);
     const roleData = {
-      teacher: { label: "授课老师", showSchedule: true, defaults: ["校本云盘", "个人云盘", "练习绑定", "班级列表", "学情列表"], options: teacherMenus },
-      branch: { label: "分校教研", showSchedule: false, defaults: ["集团云盘", "校本云盘", "练习绑定", "校本试卷", "校本资源"], options: branchMenus },
-      group: { label: "集团教研", showSchedule: false, defaults: ["集团云盘", "集团练习", "能力测评", "集团试卷", "集团资源"], options: groupMenus },
-      multi: { label: "多角色", showSchedule: true, defaults: ["校本云盘", "个人云盘", "练习绑定", "班级列表", "学情列表", "集团云盘", "集团练习", "能力测评"], options: [...new Set([...teacherMenus, ...branchMenus, ...groupMenus])] }
-    };
-    const shortcutRoutes = {
-      "集团云盘": { page: "beike", tab: 0 }, "校本云盘": { page: "beike", tab: 1 }, "个人云盘": { page: "beike", tab: 2 },
-      "集团练习": { page: "lianxi", tab: 0 }, "校本练习": { page: "lianxi", tab: 1 }, "个人练习": { page: "lianxi", tab: 2 },
-      "集团试卷": { page: "shijuan", tab: 0 }, "校本试卷": { page: "shijuan", tab: 1 }, "个人试卷": { page: "shijuan", tab: 2 },
-      "阶段测试": { page: "ceping", tab: 0 }, "能力测评": { page: "ceping", tab: 1 }, "成绩管理": { page: "ceping", tab: 2 },
-      "课表": { page: "kebiao" }, "班级列表": { page: "banji" }, "学员列表": { page: "xueyuan" },
-      "功底考练习": { page: "gongdi", tab: 0 }, "功底考配置": { page: "gongdi", tab: 1 }, "考试配置": { page: "gongdi", tab: 2 },
-      "已删除内容管理": { page: "recycle", tab: 0 }
+      teacher: { label: "授课老师", showSchedule: true, defaults: ["beike-school", "beike-personal", "practice-personal", "practice-class-bind", "resource-group"], options: menusForRole("teacher") },
+      branch: { label: "分校教研", showSchedule: false, defaults: ["beike-group", "beike-school", "practice-product-bind", "paper-school", "resource-school"], options: menusForRole("branch") },
+      group: { label: "集团教研", showSchedule: false, defaults: ["beike-group", "practice-group", "paper-group", "assessment-stage", "resource-group"], options: menusForRole("group") },
+      multi: { label: "多角色", showSchedule: true, defaults: ["beike-school", "beike-personal", "practice-class-bind", "beike-group", "practice-group", "practice-product-bind", "assessment-stage", "resource-group"], options: menusForRole("multi") }
     };
     const roleState = Object.fromEntries(Object.keys(roleData).map(key => [key, [...roleData[key].defaults]]));
     let currentRole = "teacher";
@@ -774,6 +767,7 @@
     let currentRecommendationIndex = 0;
     let aiAgentMode = "default";
     let selectedRecommendation = null;
+    let businessRequestId = 0;
     const defaultAiPrompt = document.getElementById("aiPrompt").value;
     const defaultAiResultHtml = document.getElementById("aiResult").innerHTML;
 
@@ -792,9 +786,22 @@
       document.getElementById("mainContent").classList.add("business-page");
       document.getElementById("pageHeading").hidden = true;
       const frame = document.getElementById("businessFrame");
-      frame.src = `business-prototype/index.html?embed=1&page=${encodeURIComponent(page)}&tab=${tab}#${encodeURIComponent(page)}`;
+      const businessView = document.getElementById("businessView");
+      const request = String(++businessRequestId);
+      businessView.classList.remove("ready");
+      frame.dataset.page = page;
+      frame.dataset.request = request;
+      frame.src = `business-prototype/index.html?embed=1&page=${encodeURIComponent(page)}&tab=${tab}&request=${request}#${encodeURIComponent(page)}`;
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+
+    window.addEventListener("message", event => {
+      const frame = document.getElementById("businessFrame");
+      const data = event.data || {};
+      if (event.source !== frame.contentWindow || data.type !== "iteach-business-ready") return;
+      if (data.page !== frame.dataset.page || data.request !== frame.dataset.request) return;
+      document.getElementById("businessView").classList.add("ready");
+    });
 
     function setView(view) {
       const viewId = view === "resources" ? "resourceView" : view + "View";
@@ -904,46 +911,44 @@
       }));
     }
 
-    function shortcutMeta(label) {
-      return shortcutCatalog[label]?.path || "";
+    function shortcutMeta(id) {
+      return shortcutCatalog[id]?.path || "";
     }
 
     function renderShortcuts() {
       const grid = document.getElementById("shortcutGrid");
       const items = roleState[currentRole];
-      grid.innerHTML = items.length ? items.map(label => `<button class="shortcut" data-shortcut="${label}"><span class="shortcut-icon"><i data-lucide="${shortcutCatalog[label]?.icon || "square-arrow-out-up-right"}"></i></span><span class="shortcut-copy"><span class="shortcut-label">${label}</span><span class="shortcut-meta">${shortcutMeta(label)}</span></span></button>`).join("") : `<div class="shortcut-empty">暂未设置常用菜单，请点击右上角编辑常用</div>`;
+      grid.innerHTML = items.length ? items.map(id => {
+        const item = shortcutCatalog[id];
+        return `<button class="shortcut" data-shortcut="${id}"><span class="shortcut-icon"><i data-lucide="${item?.icon || "square-arrow-out-up-right"}"></i></span><span class="shortcut-copy"><span class="shortcut-label">${item?.label || id}</span><span class="shortcut-meta">${shortcutMeta(id)}</span></span></button>`;
+      }).join("") : `<div class="shortcut-empty">暂未设置常用菜单，请点击右上角编辑常用</div>`;
       lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
       grid.querySelectorAll("[data-shortcut]").forEach(button => button.addEventListener("click", () => openShortcut(button.dataset.shortcut)));
     }
 
-    function openShortcut(label) {
-      const resourceScopes = { "集团资源": "group", "校本资源": "school", "个人资源": "personal" };
-      if (resourceScopes[label]) {
-        setView("resources");
-        const scopeButton = document.querySelector(`[data-resource-scope="${resourceScopes[label]}"]`);
+    function openShortcut(id) {
+      const item = shortcutCatalog[id];
+      if (!item) return;
+      if (item.view === "resources") {
+        setView(item.view);
+        const scopeButton = document.querySelector(`[data-resource-scope="${item.scope}"]`);
         if (scopeButton) scopeButton.click();
         return;
       }
-      if (label === "练习绑定") {
-        const tab = currentRole === "teacher" || currentRole === "multi" ? 4 : 3;
-        setBusinessPage("lianxi", tab);
+      if (item.page) {
+        setBusinessPage(item.page, item.tab || 0);
         return;
       }
-      const route = shortcutRoutes[label];
-      if (route) {
-        setBusinessPage(route.page, route.tab || 0);
-        return;
-      }
-      toast(`将进入：${shortcutMeta(label)}`);
+      toast(`将进入：${item.path}`);
     }
 
     let shortcutDraftOrder = [];
 
     function groupedShortcutOptions(options) {
-      return options.reduce((groups, label) => {
-        const group = shortcutCatalog[label].group;
+      return options.reduce((groups, id) => {
+        const group = shortcutCatalog[id].group;
         if (!groups[group]) groups[group] = [];
-        groups[group].push(label);
+        groups[group].push(id);
         return groups;
       }, {});
     }
@@ -951,9 +956,15 @@
     function renderShortcutEditor() {
       const config = roleData[currentRole];
       const groups = groupedShortcutOptions(config.options);
-      const selectedHtml = shortcutDraftOrder.length ? shortcutDraftOrder.map((label, index) => `<div class="selected-row"><span class="selected-index">${index + 1}</span><span class="selected-copy"><strong>${label}</strong><small>${shortcutMeta(label)}</small></span><span class="sort-actions"><button class="sort-button-icon" data-sort-index="${index}" data-sort-direction="-1" ${index === 0 ? "disabled" : ""} title="上移" aria-label="上移${label}"><i data-lucide="arrow-up"></i></button><button class="sort-button-icon" data-sort-index="${index}" data-sort-direction="1" ${index === shortcutDraftOrder.length - 1 ? "disabled" : ""} title="下移" aria-label="下移${label}"><i data-lucide="arrow-down"></i></button></span></div>`).join("") : `<div class="selected-empty">尚未选择首页常用菜单</div>`;
-      const availableHtml = Object.entries(groups).map(([group, labels]) => `<section class="menu-group"><h4>${group}</h4><div class="option-grid">${labels.map(label => `<label class="option"><input type="checkbox" value="${label}" ${shortcutDraftOrder.includes(label) ? "checked" : ""} /><span><strong>${label}</strong><small>${shortcutMeta(label)}</small></span></label>`).join("")}</div></section>`).join("");
-      document.getElementById("shortcutOptions").innerHTML = `<div class="role-block"><div class="selection-head"><h3>已选常用菜单（${shortcutDraftOrder.length}/8）</h3><span>使用上下箭头调整首页展示顺序</span></div><div class="selected-list">${selectedHtml}</div><div class="available-head"><h3>${config.label}可操作的二级菜单全集</h3><span>按角色权限映射，勾选不会影响左侧菜单</span></div><div class="menu-groups">${availableHtml}</div></div>`;
+      const selectedHtml = shortcutDraftOrder.length ? shortcutDraftOrder.map(id => {
+        const item = shortcutCatalog[id];
+        return `<div class="selected-row" data-drag-id="${id}"><span class="drag-handle" aria-hidden="true"><i data-lucide="grip-vertical"></i></span><span class="selected-copy"><strong>${item.label}</strong><small>${item.path}</small></span></div>`;
+      }).join("") : `<div class="selected-empty">尚未选择首页常用菜单</div>`;
+      const availableHtml = Object.entries(groups).map(([group, ids]) => `<section class="menu-group"><h4>${group}</h4><div class="option-grid">${ids.map(id => {
+        const item = shortcutCatalog[id];
+        return `<label class="option"><input type="checkbox" value="${id}" ${shortcutDraftOrder.includes(id) ? "checked" : ""} /><span><strong>${item.label}</strong><small>${item.path}</small></span></label>`;
+      }).join("")}</div></section>`).join("");
+      document.getElementById("shortcutOptions").innerHTML = `<div class="role-block"><div class="selection-head"><h3>已选常用菜单（${shortcutDraftOrder.length}/8）</h3><span>拖动卡片调整首页展示顺序</span></div><div class="selected-list">${selectedHtml}</div><div class="available-head"><h3>${config.label}可操作的真实二级菜单</h3><span>与当前已接入页面的Tab保持一致</span></div><div class="menu-groups">${availableHtml}</div></div>`;
       document.querySelectorAll("#shortcutOptions input[type='checkbox']").forEach(input => input.addEventListener("change", () => {
         if (input.checked) {
           if (shortcutDraftOrder.length >= 8) { input.checked = false; toast("最多选择8个快捷入口"); return; }
@@ -963,12 +974,43 @@
         }
         renderShortcutEditor();
       }));
-      document.querySelectorAll("[data-sort-index]").forEach(button => button.addEventListener("click", () => {
-        const from = Number(button.dataset.sortIndex);
-        const to = from + Number(button.dataset.sortDirection);
-        [shortcutDraftOrder[from], shortcutDraftOrder[to]] = [shortcutDraftOrder[to], shortcutDraftOrder[from]];
-        renderShortcutEditor();
-      }));
+      let draggedId = "";
+      let draggedRow = null;
+      let dragPointerId = null;
+      document.querySelectorAll("[data-drag-id]").forEach(row => {
+        row.addEventListener("pointerdown", event => {
+          if (event.button !== 0) return;
+          draggedId = row.dataset.dragId;
+          draggedRow = row;
+          dragPointerId = event.pointerId;
+          row.setPointerCapture(event.pointerId);
+          row.classList.add("dragging");
+          event.preventDefault();
+        });
+        row.addEventListener("pointermove", event => {
+          if (!draggedRow || event.pointerId !== dragPointerId) return;
+          event.preventDefault();
+          const target = document.elementFromPoint(event.clientX, event.clientY)?.closest("[data-drag-id]");
+          if (!target || target === draggedRow) return;
+          const targetId = target.dataset.dragId;
+          const from = shortcutDraftOrder.indexOf(draggedId);
+          const to = shortcutDraftOrder.indexOf(targetId);
+          shortcutDraftOrder.splice(from, 1);
+          shortcutDraftOrder.splice(to, 0, draggedId);
+          if (from < to) target.after(draggedRow);
+          else target.before(draggedRow);
+        });
+        const finishDrag = event => {
+          if (!draggedRow || event.pointerId !== dragPointerId) return;
+          if (draggedRow.hasPointerCapture(event.pointerId)) draggedRow.releasePointerCapture(event.pointerId);
+          draggedRow.classList.remove("dragging");
+          draggedId = "";
+          draggedRow = null;
+          dragPointerId = null;
+        };
+        row.addEventListener("pointerup", finishDrag);
+        row.addEventListener("pointercancel", finishDrag);
+      });
       lucide.createIcons({ attrs: { "stroke-width": 1.9 } });
     }
 
