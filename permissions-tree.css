@@ -1,0 +1,361 @@
+.permission-view {
+  gap: 12px;
+}
+
+.permission-workspace-tree {
+  min-height: 700px;
+  grid-template-columns: 244px minmax(0, 1fr);
+}
+
+.permission-detail-tree {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.permission-detail-tree .permission-detail-head {
+  min-height: 86px;
+}
+
+.permission-tree-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.permission-tree-title h4 {
+  margin: 0;
+  color: #1f3552;
+  font-size: 15px;
+}
+
+.permission-tree-title p {
+  margin: 5px 0 0;
+  color: #7b899c;
+  font-size: 12px;
+}
+
+.permission-tree-title > span {
+  flex: 0 0 auto;
+  color: #6d7c90;
+  font-size: 12px;
+}
+
+.permission-tree-title > span strong {
+  color: #246bfe;
+  font-size: 14px;
+}
+
+.permission-tree-toolbar {
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px solid #e1e8f1;
+  border-radius: 8px;
+}
+
+.permission-pending-filter {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  color: #7b654a;
+  background: #fff;
+  border: 1px solid #e2d6c7;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.permission-pending-filter:hover,
+.permission-pending-filter.active {
+  color: #a25d18;
+  background: #fff8ed;
+  border-color: #e6c69f;
+}
+
+.permission-pending-filter svg {
+  width: 14px;
+  height: 14px;
+}
+
+.permission-tree-native {
+  display: grid;
+  gap: 12px;
+}
+
+.permission-tree-group {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #dce5ef;
+  border-radius: 8px;
+}
+
+.permission-tree-group-head {
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: 24px 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 0 13px;
+  background: #eef4fc;
+  border-bottom: 1px solid #dce6f2;
+}
+
+.permission-tree-group-head > span {
+  min-width: 0;
+}
+
+.permission-tree-group-head strong {
+  display: block;
+  color: #294767;
+  font-size: 13px;
+}
+
+.permission-tree-group-head small {
+  display: block;
+  overflow: hidden;
+  margin-top: 2px;
+  color: #778aa0;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.permission-tree-group-head > em {
+  color: #6d8096;
+  font-size: 11px;
+  font-style: normal;
+}
+
+.permission-node-toggle {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #6380a2;
+  background: transparent;
+  border-radius: 5px;
+}
+
+.permission-node-toggle:hover {
+  color: #246bfe;
+  background: rgba(36, 107, 254, .08);
+}
+
+.permission-node-toggle svg {
+  width: 15px;
+  height: 15px;
+  transition: transform .15s ease;
+}
+
+.permission-node-toggle.collapsed svg {
+  transform: rotate(-90deg);
+}
+
+.permission-tree-native input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #246bfe;
+  cursor: pointer;
+}
+
+.permission-tree-group-children {
+  display: grid;
+}
+
+.permission-tree-page {
+  border-top: 1px solid #e8eef5;
+}
+
+.permission-tree-page:first-child {
+  border-top: 0;
+}
+
+.permission-tree-page.pending {
+  box-shadow: inset 3px 0 #e7a95f;
+}
+
+.permission-tree-page-head {
+  min-height: 49px;
+  display: grid;
+  grid-template-columns: 24px 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 26px;
+  background: #fbfcfe;
+}
+
+.permission-tree-page-copy {
+  min-width: 0;
+}
+
+.permission-tree-page-copy strong {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: #314760;
+  font-size: 12px;
+}
+
+.permission-tree-page-copy small {
+  display: block;
+  overflow: hidden;
+  margin-top: 3px;
+  color: #8996a6;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.permission-node-count {
+  color: #8794a5;
+  font-size: 11px;
+}
+
+.permission-tree-page-children {
+  padding: 2px 14px 9px 68px;
+  background: #fff;
+}
+
+.permission-tree-branch {
+  position: relative;
+  padding: 7px 0 7px 18px;
+  border-top: 1px dashed #e2e9f1;
+}
+
+.permission-tree-branch:first-child {
+  border-top: 0;
+}
+
+.permission-tree-branch::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid #dce5ef;
+}
+
+.permission-tree-branch::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 20px;
+  width: 11px;
+  border-top: 1px solid #dce5ef;
+}
+
+.permission-tree-branch-head {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.permission-tree-line {
+  display: none;
+}
+
+.permission-tree-branch-head strong {
+  color: #41546c;
+  font-size: 12px;
+}
+
+.permission-tree-branch-head small {
+  color: #96a1af;
+  font-size: 10px;
+}
+
+.permission-tree-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 4px 10px;
+  margin-top: 6px;
+  padding-left: 24px;
+}
+
+.permission-tree-actions.direct {
+  margin: 0;
+  padding: 8px 0 2px 18px;
+}
+
+.permission-tree-leaf {
+  min-width: 0;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 6px;
+  color: #5b6d82;
+  border-radius: 5px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.permission-tree-leaf:hover {
+  color: #245fac;
+  background: #f2f6fc;
+}
+
+.permission-tree-leaf:has(input:checked) {
+  color: #1f5fc9;
+  font-weight: 800;
+}
+
+.permission-tree-leaf.sensitive {
+  color: #956127;
+}
+
+.permission-tree-leaf > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.permission-tree-leaf > svg {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 auto;
+  color: #c47a2d;
+}
+
+.permission-modal-backdrop {
+  --permission-blue: #246bfe;
+}
+
+.permission-modal-footer .permission-button.primary,
+#permissionRoleSubmit,
+#confirmPermissionSave {
+  min-width: 108px;
+  color: #fff !important;
+  background: #246bfe !important;
+  border: 1px solid #246bfe !important;
+  box-shadow: 0 5px 13px rgba(36, 107, 254, .2);
+  opacity: 1;
+  visibility: visible;
+}
+
+.permission-modal-footer .permission-button.primary:hover,
+#permissionRoleSubmit:hover,
+#confirmPermissionSave:hover {
+  background: #1559de !important;
+  border-color: #1559de !important;
+}
+
+@media (max-width: 1280px) {
+  .permission-workspace-tree {
+    grid-template-columns: 210px minmax(0, 1fr);
+  }
+
+  .permission-tree-page-children {
+    padding-left: 52px;
+  }
+
+  .permission-tree-actions {
+    grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+  }
+}

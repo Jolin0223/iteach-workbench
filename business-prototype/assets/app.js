@@ -355,11 +355,16 @@
         this.syncHash();
       },
       applyInitialTab() {
-        var raw = new URLSearchParams(location.search).get('tab');
+        var params = new URLSearchParams(location.search);
+        var raw = params.get('tab');
         if (raw == null || raw === '') return;
         var tab = Number(raw);
         if (!Number.isInteger(tab) || tab < 0) return;
         this.tabState = Object.assign({}, this.tabState, { 0: tab, 'blocks.0': tab });
+        var school = params.get('school');
+        if (school && tab === 1 && (this.currentPage === 'beike' || this.currentPage === 'lianxi')) {
+          this.beikeView = Object.assign({}, this.beikeView, { ['blocks.0:' + tab]: [school] });
+        }
       },
       /* 导航栈同步到 URL hash（形如 #banji/bangding；带入口按钮文案时形如 #kebiao/xueqing~%E6%89%93%E5%8D%B0%E9%94%99%E9%A2%98） */
       syncHash() {
@@ -3008,8 +3013,9 @@
     props: ['block'],
     inject: ['root'],
     data() {
-      var requested = Number(new URLSearchParams(location.search).get('tab'));
-      return { tabIndex: Number.isInteger(requested) && requested >= 0 ? requested : 0, school: null, sel: {}, page: 1 };
+      var params = new URLSearchParams(location.search);
+      var requested = Number(params.get('tab'));
+      return { tabIndex: Number.isInteger(requested) && requested >= 0 ? requested : 0, school: params.get('school') || null, sel: {}, page: 1 };
     },
     computed: {
       curTab() { return (this.block.tabs || [])[this.tabIndex] || null; },
@@ -3023,7 +3029,10 @@
         return arr;
       }
     },
-    created() { this.resetSel(); },
+    created() {
+      if (this.school && (!this.curTab || this.curTab.mode !== 'school' || !(this.curTab.schools || []).some(s => s.name === this.school))) this.school = null;
+      this.resetSel();
+    },
     methods: {
       /* 筛选默认值：学科取页签 defSubject，其余取首项（全部） */
       resetSel() {

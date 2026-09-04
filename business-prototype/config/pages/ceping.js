@@ -1,4 +1,3 @@
-/* 测评中心（原能力测评，增加阶段测试；能力测评/成绩管理为韩荣荣负责） */
 window.APP_PAGES['ceping'] = {
   name: '测评中心',
   breadcrumb: '教学内容 / 测评中心',
@@ -7,61 +6,113 @@ window.APP_PAGES['ceping'] = {
       type: 'tabs',
       tabs: [
         {
-          name: '阶段测试',
+          name: '集团测评',
           blocks: [
-            {
-              type: 'alert',
-              style: 'info',
-              text: '阶段测试（新增，彭振雷负责）：将教师端现有阶段测试功能放置到PC端工作台，支持选择试卷、配置测试、查看作答进度和分析测试结果。'
-            },
             {
               type: 'toolbar',
               buttons: [
-                { label: '新建阶段测试', primary: true, action: { kind: 'dialog', dialog: { title: '新建阶段测试', fields: [
-                  { label: '测试名称', key: 'name', type: 'input', placeholder: '如：三年级数学第3单元阶段测试' },
-                  { label: '选择试卷', key: 'paper', type: 'select', options: ['三年级数学 · 阶段测试A卷', '三年级数学 · 阶段测试B卷', '期中模拟卷'] },
-                  { label: '参与班级', key: 'cls', type: 'select', options: ['三(2)班', '三(3)班', '四(1)班'] },
-                  { label: '开始时间', key: 'start', type: 'date' },
-                  { label: '结束时间', key: 'end', type: 'date' }
+                { label: '新建集团测评', primary: true, action: { kind: 'dialog', dialog: { title: '新建集团测评', fields: [
+                  { label: '测评名称', key: 'name', type: 'input', placeholder: '如：三年级数学第3单元测评' },
+                  { label: '选择试卷', key: 'paper', type: 'select', options: ['三年级数学 · 单元测评A卷', '三年级数学 · 单元测评B卷', '期中综合卷'] },
+                  { label: '适用范围', key: 'scope', type: 'select', options: ['全部分校', '华东区域', '指定分校'] }
                 ] } } },
-                { label: '导出成绩', action: { kind: 'export', text: '阶段测试成绩已导出' } }
+                { label: '导出列表', action: { kind: 'export', text: '集团测评列表已导出' } }
               ],
-              right: '共 4 个阶段测试'
+              right: '共 4 个集团测评'
             },
             {
               type: 'table',
               index: true,
               columns: [
-                { label: '测试名称', prop: 'name', bold: true },
-                { label: '关联试卷', prop: 'paper', width: '200px' },
-                { label: '参与班级', prop: 'cls', width: '100px' },
-                { label: '作答进度', prop: 'progress', width: '90px' },
-                { label: '时间', prop: 'time', width: '200px' },
-                { label: '状态', prop: 'status', tag: true, tagField: 'tag' }
+                { label: '测评名称', prop: 'name', bold: true },
+                { label: '关联试卷', prop: 'paper', width: '210px' },
+                { label: '适用范围', prop: 'scope', width: '130px' },
+                { label: '参与人数', prop: 'participants', width: '90px' },
+                { label: '创建时间', prop: 'time', width: '150px' },
+                { label: '状态', prop: 'status', tag: true, tagField: 'tag', width: '90px' }
               ],
               data: [
-                { name: '三年级数学第3单元阶段测试', paper: '阶段测试A卷', cls: '三(2)班', progress: '28/36', time: '08-17 09:00 ~ 08-17 11:00', status: '进行中', tag: 'blue' },
-                { name: '三年级数学期中阶段测试', paper: '期中模拟卷', cls: '三(2)班', progress: '36/36', time: '08-10 09:00 ~ 08-10 11:00', status: '已完成', tag: 'green' },
-                { name: '四年级英语阶段测试', paper: '期中模拟卷', cls: '四(1)班', progress: '30/30', time: '08-08 14:00 ~ 08-08 16:00', status: '已完成', tag: 'green' },
-                { name: '三年级数学第2单元阶段测试', paper: '阶段测试B卷', cls: '三(3)班', progress: '0/32', time: '08-20 09:00 ~ 08-20 11:00', status: '未开始', tag: 'gray' }
+                { name: '三年级数学第3单元集团测评', paper: '单元测评A卷', scope: '全部分校', participants: '1,286', time: '2026-08-29 09:30', status: '进行中', tag: 'blue' },
+                { name: '四年级英语秋季入学测评', paper: '秋季入学卷', scope: '华东区域', participants: '864', time: '2026-08-26 14:12', status: '已发布', tag: 'green' },
+                { name: '三年级语文阅读能力测评', paper: '阅读能力卷', scope: '全部分校', participants: '1,542', time: '2026-08-22 10:05', status: '已结束', tag: 'gray' },
+                { name: '五年级数学期中模拟测评', paper: '期中模拟卷', scope: '指定分校', participants: '0', time: '2026-08-20 16:48', status: '草稿', tag: 'gray' }
               ],
               actions: [
-                { label: '配置', action: { kind: 'message', text: '编辑测试配置' } },
-                { label: '查看作答', action: { kind: 'message', text: '查看作答进度' } },
-                { label: '分析结果', action: { kind: 'message', text: '进入结果分析' } }
+                { label: '查看', action: { kind: 'message', text: '查看集团测评详情' } },
+                { label: '配置', action: { kind: 'message', text: '编辑集团测评配置' } },
+                { label: '结果', action: { kind: 'message', text: '查看集团测评结果' } }
               ]
             }
           ]
         },
         {
-          name: '能力测评',
+          name: '校本测评',
           blocks: [
             {
-              type: 'placeholder',
-              icon: 'gauge',
-              title: '能力测评 · 原型待补充',
-              desc: '复用现有能力测评，支持二维码开放参加和结果查看',
-              owner: '韩荣荣'
+              type: 'toolbar',
+              buttons: [
+                { label: '新建校本测评', primary: true, action: { kind: 'dialog', dialog: { title: '新建校本测评', fields: [
+                  { label: '测评名称', key: 'name', type: 'input', placeholder: '请输入校本测评名称' },
+                  { label: '选择试卷', key: 'paper', type: 'select', options: ['上海分校三年级语文测评卷', '上海分校四年级数学测评卷'] },
+                  { label: '参与班级', key: 'cls', type: 'select', options: ['三(2)班', '三(3)班', '四(1)班'] }
+                ] } } },
+                { label: '导出列表', action: { kind: 'export', text: '校本测评列表已导出' } }
+              ],
+              right: '共 3 个校本测评'
+            },
+            {
+              type: 'table',
+              index: true,
+              columns: [
+                { label: '测评名称', prop: 'name', bold: true },
+                { label: '关联试卷', prop: 'paper', width: '210px' },
+                { label: '参与班级', prop: 'cls', width: '120px' },
+                { label: '作答进度', prop: 'progress', width: '100px' },
+                { label: '创建时间', prop: 'time', width: '150px' },
+                { label: '状态', prop: 'status', tag: true, tagField: 'tag', width: '90px' }
+              ],
+              data: [
+                { name: '上海分校三年级语文周测', paper: '三年级语文周测卷', cls: '三(2)班', progress: '28/32', time: '2026-08-30 13:20', status: '进行中', tag: 'blue' },
+                { name: '上海分校四年级数学单元测评', paper: '四年级数学单元卷', cls: '四(1)班', progress: '30/30', time: '2026-08-27 10:16', status: '已结束', tag: 'gray' },
+                { name: '秋季班英语入班测评', paper: '英语入班测评卷', cls: '三(3)班', progress: '0/26', time: '2026-08-25 18:05', status: '未开始', tag: 'green' }
+              ],
+              actions: [
+                { label: '查看', action: { kind: 'message', text: '查看校本测评详情' } },
+                { label: '配置', action: { kind: 'message', text: '编辑校本测评配置' } },
+                { label: '结果', action: { kind: 'message', text: '查看校本测评结果' } }
+              ]
+            }
+          ]
+        },
+        {
+          name: '测评绑定',
+          blocks: [
+            {
+              type: 'toolbar',
+              buttons: [
+                { label: '新建绑定', primary: true, action: { kind: 'message', text: '新建测评绑定' } }
+              ],
+              right: '共 3 条绑定关系'
+            },
+            {
+              type: 'table',
+              index: true,
+              columns: [
+                { label: '测评名称', prop: 'name', bold: true },
+                { label: '绑定对象', prop: 'target', width: '210px' },
+                { label: '内容范围', prop: 'scope', width: '110px' },
+                { label: '生效时间', prop: 'time', width: '190px' },
+                { label: '状态', prop: 'status', tag: true, tagField: 'tag', width: '90px' }
+              ],
+              data: [
+                { name: '三年级数学第3单元集团测评', target: 'S3数学秋季课程产品', scope: '集团', time: '2026-09-01 ~ 2026-09-30', status: '已生效', tag: 'green' },
+                { name: '上海分校三年级语文周测', target: '三年级（2）班', scope: '校本', time: '2026-08-30 ~ 2026-09-06', status: '已生效', tag: 'green' },
+                { name: '秋季班英语入班测评', target: '三年级（3）班', scope: '校本', time: '2026-09-02 ~ 2026-09-05', status: '待生效', tag: 'blue' }
+              ],
+              actions: [
+                { label: '查看', action: { kind: 'message', text: '查看绑定详情' } },
+                { label: '调整', action: { kind: 'message', text: '调整测评绑定' } }
+              ]
             }
           ]
         },
@@ -69,11 +120,32 @@ window.APP_PAGES['ceping'] = {
           name: '成绩管理',
           blocks: [
             {
-              type: 'placeholder',
-              icon: 'chart',
-              title: '成绩管理 · 原型待补充',
-              desc: '集中查看阶段测试和能力测评成绩，支持进入班级及学员结果',
-              owner: '韩荣荣'
+              type: 'toolbar',
+              buttons: [
+                { label: '导出成绩', primary: true, action: { kind: 'export', text: '测评成绩已导出' } }
+              ],
+              right: '最近更新 2026-08-31 10:20'
+            },
+            {
+              type: 'table',
+              index: true,
+              columns: [
+                { label: '测评名称', prop: 'name', bold: true },
+                { label: '范围', prop: 'scope', width: '100px' },
+                { label: '应作答', prop: 'expected', width: '90px' },
+                { label: '已作答', prop: 'answered', width: '90px' },
+                { label: '平均分', prop: 'average', width: '90px' },
+                { label: '完成时间', prop: 'time', width: '150px' }
+              ],
+              data: [
+                { name: '三年级语文阅读能力测评', scope: '集团', expected: '1,542', answered: '1,506', average: '86.4', time: '2026-08-29 18:00' },
+                { name: '上海分校四年级数学单元测评', scope: '校本', expected: '30', answered: '30', average: '89.7', time: '2026-08-28 20:30' },
+                { name: '四年级英语秋季入学测评', scope: '集团', expected: '864', answered: '812', average: '82.1', time: '2026-08-27 17:45' }
+              ],
+              actions: [
+                { label: '查看成绩', action: { kind: 'message', text: '查看测评成绩明细' } },
+                { label: '结果分析', action: { kind: 'message', text: '进入测评结果分析' } }
+              ]
             }
           ]
         }
